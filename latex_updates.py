@@ -5,7 +5,7 @@ latex_updates.py — A&A-style tracked-changes diff between two LaTeX manuscript
   New text   : BLUE
   Removed text: ORANGE with strikethrough
 
-A \showdeltrue / \showdelfalse toggle in the output file controls
+A showdeltrue / showdelfalse toggle in the output file controls
 whether deleted text is rendered or hidden entirely.
 
 Usage:
@@ -168,6 +168,13 @@ TOGGLE_PREAMBLE = r"""
 \long\def\DIFdel#1{\ifshowdel{\color{orange}\sout{#1}}\fi}
 \long\def\DIFdeltex#1{\ifshowdel{\color{orange}\sout{#1}}\fi}
 \long\def\DIFdelFL#1{\DIFdel{#1}}
+
+%% Make the float-environment begin/end markers truly empty so that
+%% \hline after \DIFaddendFL works correctly inside tabular environments.
+\def\DIFaddbeginFL{}
+\def\DIFaddendFL{}
+\def\DIFdelbeginFL{}
+\def\DIFdelendFL{}
 
 """
 
