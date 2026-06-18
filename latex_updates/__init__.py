@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-latex_updates — A&A-style tracked-changes diff between two LaTeX manuscripts.
+latex_updates — tracked-changes diff between two LaTeX manuscripts.
 
   New text   : BLUE
   Removed text: ORANGE with wavy strikethrough
 
-A showdeltrue / showdelfalse toggle in the output file controls
-whether deleted text is rendered or hidden entirely.
+Detects the journal from \\documentclass and applies journal-specific
+latexdiff options automatically (A&A, AASTeX, MNRAS, …).
 
 Usage:
     latex_updates old.tex new.tex
@@ -19,7 +19,6 @@ Requirements:
 """
 
 import argparse
-import os
 import re
 import shutil
 import subprocess
@@ -29,27 +28,85 @@ from pathlib import Path
 
 
 # ---------------------------------------------------------------------------
+# Journal profiles
+# ---------------------------------------------------------------------------
+# Each profile specifies:
+#   name        — human-readable journal name
+#   docclass    — compiled regex matching the \documentclass declaration
+#   extra_args  — extra arguments forwarded to latexdiff
+#
+# Design notes per journal:
+#
+# A&A  : \abstract{context}{aims}{methods}{results}{conclusions} is a
+#         5-argument command.  latexdiff's TEXTCMD mechanism handles only
+#         one-argument commands, so word-level diffing inside \abstract
+#         produces broken markup.  --append-context2cmd=abstract tells
+#         latexdiff to treat \abstract as a context command: in deleted
+#         passages the command and its arguments are suppressed entirely,
+#         which is clean and always compiles.  \subtitle is A&A-specific
+#         and should not be treated as a text command.
+#
+# AASTeX: author-metadata commands (\affiliation, \correspondingauthor, …)
+#         have argument formats incompatible with word-level diffing.
+#
+# MNRAS : uses a standard abstract environment — no special handling needed.
+
+JOURNALS: dict[str, dict] = {
+    'aa': {
+        'name': 'Astronomy & Astrophysics (A&A)',
+        'docclass': re.compile(
+            r'\\documentclass(?:\[[^\]]*\])?\{aa\}', re.IGNORECASE
+        ),
+        'extra_args': [
+            '--append-context2cmd=abstract',
+            '--exclude-textcmd=subtitle',
+        ],
+    },
+    'aastex': {
+        'name': 'AASTeX (ApJ / AJ / ApJL / PASP)',
+        'docclass': re.compile(
+            r'\\documentclass(?:\[[^\]]*\])?\{aastex\w*\}', re.IGNORECASE
+        ),
+        'extra_args': [
+            '--exclude-textcmd='
+            'affiliation,correspondingauthor,email,received,revised,accepted,published',
+        ],
+    },
+    'mnras': {
+        'name': 'Monthly Notices of the Royal Astronomical Society (MNRAS)',
+        'docclass': re.compile(
+            r'\\documentclass(?:\[[^\]]*\])?\{mnras\}', re.IGNORECASE
+        ),
+        'extra_args': [],
+    },
+}
+
+
+def detect_journal(text: str) -> tuple[str, dict] | tuple[None, None]:
+    """Scan LaTeX source for a known \\documentclass and return (key, profile)."""
+    for key, profile in JOURNALS.items():
+        if profile['docclass'].search(text):
+            return key, profile
+    return None, None
+
+
+# ---------------------------------------------------------------------------
 # LaTeX brace-matching utilities
 # ---------------------------------------------------------------------------
 
 def find_matching_brace(text: str, open_pos: int) -> int:
-    """Return position of the } that matches the { at open_pos.
-
-    Correctly handles:
-      - \\X sequences (backslash + any character, including \\% and \\{)
-      - LaTeX % comment lines (rest of line is ignored for brace counting)
-    """
+    """Return position of the } that matches the { at open_pos."""
     depth = 1
     i = open_pos + 1
     n = len(text)
     while i < n and depth > 0:
         c = text[i]
         if c == '\\':
-            i += 2          # skip the command character after backslash
+            i += 2
             continue
         if c == '%':
             while i < n and text[i] != '\n':
-                i += 1      # skip to end of comment line
+                i += 1
         elif c == '{':
             depth += 1
         elif c == '}':
@@ -59,16 +116,11 @@ def find_matching_brace(text: str, open_pos: int) -> int:
 
 
 def strip_bf_markup(text: str) -> str:
-    """Remove {\\bf ...} and \\textbf{...} groups, keeping their content.
-
-    These are old-revision tracking markers that should not appear as
-    "changed" text in the diff.
-    """
+    """Remove {\\bf ...} and \\textbf{...} groups, keeping their content."""
     result = []
     i = 0
     n = len(text)
     while i < n:
-        # {\\bf content} → content
         if text[i] == '{' and text[i+1:i+4] == '\\bf':
             after_bf = i + 4
             if after_bf < n and text[after_bf] in ' \t\n\\':
@@ -78,7 +130,6 @@ def strip_bf_markup(text: str) -> str:
                 result.append(text[after_bf:close])
                 i = close + 1
                 continue
-        # \\textbf{content} → content
         if text[i:i+8] == '\\textbf{':
             open_pos = i + 7
             close = find_matching_brace(text, open_pos)
@@ -91,13 +142,7 @@ def strip_bf_markup(text: str) -> str:
 
 
 def strip_line_start_bare_groups(text: str, max_passes: int = 8) -> str:
-    """Strip bare { } groups that open at the very start of a line.
-
-    These are leftover section-level braces from {\\bf} → { } conversions.
-    The pattern is: a line that begins with { followed only by spaces/tabs
-    then a newline — the entire matching group is replaced by its content.
-    Multiple passes handle nested groups.
-    """
+    """Strip bare { } groups that open at the very start of a line."""
     for _ in range(max_passes):
         result = []
         pos = 0
@@ -130,13 +175,7 @@ def strip_line_start_bare_groups(text: str, max_passes: int = 8) -> str:
 # ---------------------------------------------------------------------------
 
 def clean_file(text: str, strip_bare_groups: bool = False) -> str:
-    """Prepare a LaTeX file for latexdiff.
-
-    Args:
-        text:              Raw LaTeX source.
-        strip_bare_groups: Strip line-start bare { } groups (use for the
-                           NEW file when the OLD file used {\\bf} markup).
-    """
+    """Prepare a LaTeX file for latexdiff."""
     text = strip_bf_markup(text)
     if strip_bare_groups:
         text = strip_line_start_bare_groups(text)
@@ -164,14 +203,10 @@ TOGGLE_PREAMBLE = r"""
 \definecolor{orange}{rgb}{1.0,0.55,0.0}
 
 %% Wavy strikethrough for deleted text.
-%% Follows the exact pattern of ulem's \sout / \uwave: \bgroup + params + \ULon
-%% with no explicit argument or \egroup.  The braces at the call site (e.g.
-%% \DIFwavestrike{text}) supply the argument to \ULon and close the \bgroup.
 \DeclareRobustCommand*\DIFwavestrike{\bgroup \ULdepth=-.5ex
   \markoverwith{\hbox{\sixly\char58}}\ULon}
 
 %% Colour overrides for latexdiff markup.
-%% \long\def allows arguments that span paragraph breaks.
 \long\def\DIFadd#1{{\color{blue}#1}}
 \long\def\DIFaddtex#1{{\color{blue}#1}}
 \long\def\DIFaddFL#1{\DIFadd{#1}}
@@ -208,16 +243,22 @@ def _check_tool(name: str, install_hint: str) -> None:
         )
 
 
-def run_latexdiff(old_path: Path, new_path: Path) -> str:
+def run_latexdiff(
+    old_path: Path,
+    new_path: Path,
+    extra_args: list[str] | None = None,
+) -> str:
     """Run latexdiff and return the merged diff source."""
+    cmd = [
+        'latexdiff',
+        '--encoding=utf8',
+        '--math-markup=0',
+        *(extra_args or []),
+        str(old_path),
+        str(new_path),
+    ]
     result = subprocess.run(
-        [
-            'latexdiff',
-            '--encoding=utf8',
-            '--math-markup=0',
-            str(old_path),
-            str(new_path),
-        ],
+        cmd,
         capture_output=True,
         text=True,
         encoding='utf-8',
@@ -275,6 +316,14 @@ def generate(
         'tlmgr install latexdiff       # TeX Live',
     )
 
+    # --- Detect journal ---
+    new_text_raw = new_path.read_text(encoding='utf-8', errors='replace')
+    journal_key, journal = detect_journal(new_text_raw)
+    if journal:
+        print(f'  Detected journal: {journal["name"]}')
+    else:
+        print('  Journal: generic (no known \\documentclass detected)')
+
     # --- Clean ---
     print(f'  Cleaning {old_path.name} (strip {{\\bf}} markup)...')
     old_clean = clean_file(
@@ -283,10 +332,7 @@ def generate(
     )
 
     print(f'  Cleaning {new_path.name} (strip bare groups)...')
-    new_clean = clean_file(
-        new_path.read_text(encoding='utf-8', errors='replace'),
-        strip_bare_groups=True,
-    )
+    new_clean = clean_file(new_text_raw, strip_bare_groups=True)
 
     # Write temporary files adjacent to the inputs
     tmp_dir = old_path.parent
@@ -297,7 +343,11 @@ def generate(
         tmp_new.write_text(new_clean, encoding='utf-8')
 
         print('  Running latexdiff...')
-        diff_text = run_latexdiff(tmp_old, tmp_new)
+        diff_text = run_latexdiff(
+            tmp_old,
+            tmp_new,
+            extra_args=journal['extra_args'] if journal else None,
+        )
     finally:
         tmp_old.unlink(missing_ok=True)
         tmp_new.unlink(missing_ok=True)
@@ -334,7 +384,8 @@ def main() -> None:
     parser = argparse.ArgumentParser(
         prog='latex_updates',
         description=(
-            'Generate an A&A-style tracked-changes PDF from two LaTeX manuscripts.\n'
+            'Generate a tracked-changes PDF from two LaTeX manuscripts.\n'
+            'Detects A&A, AASTeX, MNRAS and applies journal-specific options.\n'
             'New text is shown in BLUE; removed text in ORANGE with wavy strikethrough.'
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
