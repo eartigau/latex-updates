@@ -84,15 +84,19 @@
       border-bottom: 1px solid #e2e8f0;
       position: sticky; top: 0; z-index: 100;
     }
-    nav ul {
+    .nav-inner {
       max-width: 960px;
       margin: 0 auto;
       padding: 0 1.5rem;
       display: flex;
+      align-items: center;
+    }
+    nav ul {
+      display: flex;
       gap: 0.25rem;
       list-style: none;
       overflow-x: auto;
-      align-items: center;
+      flex: 1;
     }
     nav a {
       display: inline-block;
@@ -106,16 +110,21 @@
     }
     nav a:hover { color: #0f3460; }
     .nav-lang {
-      margin-left: auto;
       display: flex;
-      gap: 0.25rem;
-      padding: 0 0 0 1rem;
+      gap: 4px;
+      padding: 4px;
+      background: #f1f5f9;
+      border-radius: 8px;
+      margin-left: 1rem;
+      flex-shrink: 0;
     }
     .nav-lang a {
-      padding: 0.4rem 0.7rem;
-      border-radius: 6px;
+      padding: 0.3rem 0.65rem;
+      border-radius: 5px;
       font-size: 0.82rem;
-      font-weight: 600;
+      font-weight: 700;
+      color: #718096;
+      text-decoration: none;
     }
     .nav-lang a.active {
       background: #0f3460;
@@ -320,20 +329,22 @@
 </header>
 
 <nav>
-  <ul>
-    <li><a href="#install">Installation</a></li>
-    <li><a href="#quickstart">Démarrage rapide</a></li>
-    <li><a href="#usage">Utilisation</a></li>
-    <li><a href="#toggle">Bascule</a></li>
-    <li><a href="#how">Fonctionnement</a></li>
-    <li><a href="#demo">Démonstration</a></li>
-    <li><a href="https://github.com/eartigau/latex-updates">GitHub</a></li>
-    <li><a href="https://eartigau.github.io/index_fr.html">← Page d'accueil</a></li>
-    <li class="nav-lang">
+  <div class="nav-inner">
+    <ul>
+      <li><a href="#install">Installation</a></li>
+      <li><a href="#quickstart">Démarrage rapide</a></li>
+      <li><a href="#usage">Utilisation</a></li>
+      <li><a href="#toggle">Bascule</a></li>
+      <li><a href="#how">Fonctionnement</a></li>
+      <li><a href="#demo">Démonstration</a></li>
+      <li><a href="https://github.com/eartigau/latex-updates">GitHub</a></li>
+      <li><a href="https://eartigau.github.io/index_fr.html">← Page d'accueil</a></li>
+    </ul>
+    <div class="nav-lang">
       <a href="index_en.html">EN</a>
       <a href="index_fr.html" class="active">FR</a>
-    </li>
-  </ul>
+    </div>
+  </div>
 </nav>
 
 <main>

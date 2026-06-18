@@ -84,15 +84,19 @@
       border-bottom: 1px solid #e2e8f0;
       position: sticky; top: 0; z-index: 100;
     }
-    nav ul {
+    .nav-inner {
       max-width: 960px;
       margin: 0 auto;
       padding: 0 1.5rem;
       display: flex;
+      align-items: center;
+    }
+    nav ul {
+      display: flex;
       gap: 0.25rem;
       list-style: none;
       overflow-x: auto;
-      align-items: center;
+      flex: 1;
     }
     nav a {
       display: inline-block;
@@ -106,16 +110,21 @@
     }
     nav a:hover { color: #0f3460; }
     .nav-lang {
-      margin-left: auto;
       display: flex;
-      gap: 0.25rem;
-      padding: 0 0 0 1rem;
+      gap: 4px;
+      padding: 4px;
+      background: #f1f5f9;
+      border-radius: 8px;
+      margin-left: 1rem;
+      flex-shrink: 0;
     }
     .nav-lang a {
-      padding: 0.4rem 0.7rem;
-      border-radius: 6px;
+      padding: 0.3rem 0.65rem;
+      border-radius: 5px;
       font-size: 0.82rem;
-      font-weight: 600;
+      font-weight: 700;
+      color: #718096;
+      text-decoration: none;
     }
     .nav-lang a.active {
       background: #0f3460;
@@ -320,20 +329,22 @@
 </header>
 
 <nav>
-  <ul>
-    <li><a href="#install">Install</a></li>
-    <li><a href="#quickstart">Quick start</a></li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#toggle">Toggle</a></li>
-    <li><a href="#how">How it works</a></li>
-    <li><a href="#demo">Demo</a></li>
-    <li><a href="https://github.com/eartigau/latex-updates">GitHub</a></li>
-    <li><a href="https://eartigau.github.io/">← Homepage</a></li>
-    <li class="nav-lang">
+  <div class="nav-inner">
+    <ul>
+      <li><a href="#install">Install</a></li>
+      <li><a href="#quickstart">Quick start</a></li>
+      <li><a href="#usage">Usage</a></li>
+      <li><a href="#toggle">Toggle</a></li>
+      <li><a href="#how">How it works</a></li>
+      <li><a href="#demo">Demo</a></li>
+      <li><a href="https://github.com/eartigau/latex-updates">GitHub</a></li>
+      <li><a href="https://eartigau.github.io/">← Homepage</a></li>
+    </ul>
+    <div class="nav-lang">
       <a href="index_en.html" class="active">EN</a>
       <a href="index_fr.html">FR</a>
-    </li>
-  </ul>
+    </div>
+  </div>
 </nav>
 
 <main>
