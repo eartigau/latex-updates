@@ -645,29 +645,30 @@ Done.</span></code></pre>
 
     <table>
       <thead>
-        <tr><th>File</th><th>Content</th></tr>
+        <tr><th>File</th><th>LaTeX constructs demonstrated</th></tr>
       </thead>
       <tbody>
         <tr>
           <td><code>demo/demo_old.tex</code></td>
-          <td>First submission: 3 authors, 1&thinsp;800 interactions, 14 recovered
-              entities, cordiality excess <em>f</em> = 1.4%, slope β = −0.9</td>
+          <td>3 authors · title · abstract with inline math ·
+              4 sections · enumerated list (3 items) ·
+              tabular with 4 data rows · bibliography</td>
         </tr>
         <tr>
           <td><code>demo/demo_new.tex</code></td>
-          <td>Revised after referee: 4 authors (D. Fourth added), 2&thinsp;126
-              interactions, 17 entities + 2 new candidates, <em>f</em> = 1.07%,
-              β = −1.38, new Discussion section</td>
+          <td>4 authors (one added) · title reworded ·
+              abstract numbers updated · 4th list item added ·
+              table gains a row · new subsection ·
+              full new \texttt{discussion} section · expanded bibliography</td>
         </tr>
       </tbody>
     </table>
 
     <p>
-      The changes span: a title update ("initial" → "revised and expanded"),
-      a new author, updated numbers throughout the abstract, a new 4th
-      selection criterion, an additional row in the results table, a new
-      "cordiality paradox" subsection, and a full new Discussion section —
-      giving a representative range of diff types.
+      Together the two versions cover the most common diff scenarios:
+      inline text edits, math value changes, structural additions (new author,
+      list item, table row, section), and a completely new section —
+      making them a useful smoke-test for any LaTeX diff workflow.
     </p>
 
     <div class="snapshot-wrap">

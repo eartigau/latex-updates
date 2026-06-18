@@ -203,8 +203,8 @@ TOGGLE_PREAMBLE = r"""
 \definecolor{orange}{rgb}{1.0,0.55,0.0}
 
 %% Wavy strikethrough for deleted text.
-%% \ULdepth=-.5\ht\strutbox places the wave at half the ascender height (mid-glyph).
-\DeclareRobustCommand*\DIFwavestrike{\bgroup \ULdepth=-.5\ht\strutbox
+%% \ULdepth=-.65\ht\strutbox centres the wave at roughly mid-glyph height.
+\DeclareRobustCommand*\DIFwavestrike{\bgroup \ULdepth=-.65\ht\strutbox
   \markoverwith{\hbox{\sixly\char58}}\ULon}
 
 %% Colour overrides for latexdiff markup.
