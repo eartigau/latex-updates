@@ -215,12 +215,15 @@ TOGGLE_PREAMBLE = r"""
 \DeclareRobustCommand{\DIFdeltex}[1]{\ifshowdel{{\color{orange}\setlength{\ULdepth}{-0.6ex}\uwave{#1}}}\fi}
 \DeclareRobustCommand{\DIFdelFL}[1]{\DIFdel{#1}}
 
-%% Make the float-environment begin/end markers truly empty so that
-%% \hline after \DIFaddendFL works correctly inside tabular environments.
-\def\DIFaddbeginFL{}
-\def\DIFaddendFL{}
-\def\DIFdelbeginFL{}
-\def\DIFdelendFL{}
+%% Suppress latexdiff's \includegraphics substitution trick.
+%% latexdiff replaces \includegraphics with \DIFaddincludegraphics / \DIFdelincludegraphics
+%% inside added/deleted blocks to wrap figures in colored frames or red crosses.
+%% Making all begin/end block markers empty prevents this; actual text
+%% visibility is controlled by \DIFdel{} and \DIFadd{} at the command level.
+\def\DIFaddbegin{}\def\DIFaddend{}
+\def\DIFdelbegin{}\def\DIFdelend{}
+\def\DIFaddbeginFL{}\def\DIFaddendFL{}
+\def\DIFdelbeginFL{}\def\DIFdelendFL{}
 
 """
 
