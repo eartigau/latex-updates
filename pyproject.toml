@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "latex_updates"
+version = "1.0"
+description = "Generate A&A-style tracked-changes PDFs between two LaTeX manuscripts"
+readme = "README.md"
+requires-python = ">=3.10"
+
+authors = [
+  { name = "Etienne Artigau", email = "etienne.artigau@umontreal.ca" }
+]
+
+license = { text = "MIT License" }
+dependencies = []
+
+[project.urls]
+Homepage = "https://eartigau.github.io/latex-updates/"
+Repository = "https://github.com/eartigau/latex-updates"
+
+[project.scripts]
+latex_updates = "latex_updates:main"
+
+[tool.setuptools]
+packages = ["latex_updates"]
+zip-safe = false

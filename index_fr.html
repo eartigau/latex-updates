@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>latex_updates — Suivi de modifications LaTeX en style A&amp;A</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                   "Helvetica Neue", Arial, sans-serif;
+      color: #1a1a2e;
+      background: #f8f9fc;
+      line-height: 1.7;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0f3460 0%, #16213e 60%, #0d1b2a 100%);
+      color: #fff;
+      padding: 4rem 2rem 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: "";
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 70% 30%, rgba(22,160,133,0.15) 0%, transparent 60%);
+    }
+    header h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      position: relative;
+    }
+    header h1 span.mono {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      color: #4ecdc4;
+    }
+    header p.tagline {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      opacity: 0.85;
+      max-width: 640px;
+      margin-inline: auto;
+      position: relative;
+    }
+    .badge-row {
+      margin-top: 1.5rem;
+      display: flex;
+      gap: 0.6rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #e0e0e0;
+      font-size: 0.82rem;
+      font-family: monospace;
+      padding: 0.3rem 0.7rem;
+      border-radius: 20px;
+    }
+    .demo-colours {
+      margin-top: 2rem;
+      display: inline-flex;
+      gap: 1.5rem;
+      background: rgba(0,0,0,0.3);
+      border-radius: 12px;
+      padding: 0.75rem 1.5rem;
+      position: relative;
+    }
+    .demo-colours span { font-size: 1.05rem; font-weight: 500; }
+    .added   { color: #60a5fa; }
+    .removed { color: #fb923c; text-decoration: line-through; }
+
+    nav {
+      background: #fff;
+      border-bottom: 1px solid #e2e8f0;
+      position: sticky; top: 0; z-index: 100;
+    }
+    nav ul {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      gap: 0.25rem;
+      list-style: none;
+      overflow-x: auto;
+      align-items: center;
+    }
+    nav a {
+      display: inline-block;
+      padding: 0.85rem 0.9rem;
+      color: #4a5568;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: #0f3460; }
+    .nav-lang {
+      margin-left: auto;
+      display: flex;
+      gap: 0.25rem;
+      padding: 0 0 0 1rem;
+    }
+    .nav-lang a {
+      padding: 0.4rem 0.7rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+    .nav-lang a.active {
+      background: #0f3460;
+      color: #fff;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    section { margin-bottom: 3.5rem; }
+    h2 {
+      font-size: 1.65rem;
+      font-weight: 700;
+      color: #0f3460;
+      margin-bottom: 1rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin: 1.5rem 0 0.6rem;
+    }
+    p { margin-bottom: 0.85rem; }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.2rem;
+      margin-top: 1rem;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 1.2rem 1.3rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .card .num {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #4ecdc4;
+      line-height: 1;
+    }
+    .card h3 { margin-top: 0.5rem; font-size: 1rem; }
+    .card p  { font-size: 0.88rem; color: #718096; margin: 0; }
+
+    pre {
+      background: #1a1a2e;
+      color: #e2e8f0;
+      border-radius: 8px;
+      padding: 1.2rem 1.4rem;
+      overflow-x: auto;
+      font-size: 0.875rem;
+      line-height: 1.6;
+      margin: 0.75rem 0 1rem;
+      position: relative;
+    }
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    }
+    pre code { color: inherit; background: none; padding: 0; font-size: inherit; }
+    :not(pre) > code {
+      background: #edf2f7;
+      color: #c7254e;
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+      font-size: 0.875em;
+    }
+    .kw  { color: #c084fc; }
+    .cm  { color: #64748b; font-style: italic; }
+    .st  { color: #86efac; }
+    .nb  { color: #60a5fa; }
+    .op  { color: #f472b6; }
+
+    .terminal {
+      background: #0d1b2a;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 0.75rem 0 1rem;
+    }
+    .terminal-bar {
+      background: #1e293b;
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .terminal-bar span { width: 12px; height: 12px; border-radius: 50%; }
+    .dot-red    { background: #ef4444; }
+    .dot-yellow { background: #f59e0b; }
+    .dot-green  { background: #22c55e; }
+    .terminal pre {
+      margin: 0;
+      border-radius: 0;
+      background: transparent;
+      padding: 1rem 1.4rem;
+    }
+    .prompt { color: #4ecdc4; }
+    .out    { color: #94a3b8; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.75rem 0 1rem;
+      font-size: 0.9rem;
+    }
+    th {
+      background: #0f3460;
+      color: #fff;
+      text-align: left;
+      padding: 0.55rem 0.9rem;
+      font-weight: 600;
+    }
+    td { padding: 0.55rem 0.9rem; border-bottom: 1px solid #e2e8f0; }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: #f7fafc; }
+
+    .colour-demo {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid #4ecdc4;
+      border-radius: 8px;
+      padding: 1.2rem 1.4rem;
+      font-family: "Times New Roman", Georgia, serif;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: #1a202c;
+      margin: 0.75rem 0;
+    }
+    .colour-demo .add  { color: #2563eb; }
+    .colour-demo .del  { color: #ea580c; text-decoration: line-through; }
+
+    .toggle-box {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 1.2rem 1.4rem;
+      margin: 0.75rem 0;
+    }
+    .toggle-box p { margin: 0 0 0.6rem; font-size: 0.92rem; color: #4a5568; }
+
+    .cta {
+      display: inline-block;
+      background: #0f3460;
+      color: #fff;
+      padding: 0.75rem 1.8rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      margin-top: 1rem;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .cta:hover { background: #1a4a8a; transform: translateY(-1px); }
+
+    .info-box {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-left: 4px solid #3b82f6;
+      border-radius: 8px;
+      padding: 1rem 1.3rem;
+      margin: 0.75rem 0 1rem;
+      font-size: 0.92rem;
+      color: #1e3a5f;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.85rem;
+      color: #718096;
+      background: #fff;
+      border-top: 1px solid #e2e8f0;
+    }
+    footer a { color: #0f3460; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1><span class="mono">latex_updates</span></h1>
+  <p class="tagline">
+    Génère des PDFs avec suivi de modifications en style A&amp;A à partir de deux manuscrits LaTeX.
+    Nouveau texte en bleu, texte supprimé en orange barré.
+    S'installe une fois, s'utilise partout.
+  </p>
+  <div class="badge-row">
+    <span class="badge">Python ≥ 3.10</span>
+    <span class="badge">latexdiff</span>
+    <span class="badge">Licence MIT</span>
+    <span class="badge">pip install</span>
+  </div>
+  <div class="demo-colours">
+    <span class="added">le nouveau texte apparaît ainsi</span>
+    <span class="removed">l'ancien texte apparaît ainsi</span>
+  </div>
+</header>
+
+<nav>
+  <ul>
+    <li><a href="#install">Installation</a></li>
+    <li><a href="#quickstart">Démarrage rapide</a></li>
+    <li><a href="#usage">Utilisation</a></li>
+    <li><a href="#toggle">Bascule</a></li>
+    <li><a href="#how">Fonctionnement</a></li>
+    <li><a href="#demo">Démonstration</a></li>
+    <li><a href="https://github.com/eartigau/latex-updates">GitHub</a></li>
+    <li><a href="https://eartigau.github.io/index_fr.html">← Page d'accueil</a></li>
+    <li class="nav-lang">
+      <a href="index_en.html">EN</a>
+      <a href="index_fr.html" class="active">FR</a>
+    </li>
+  </ul>
+</nav>
+
+<main>
+
+  <!-- Installation -->
+  <section id="install">
+    <h2>Installation</h2>
+
+    <div class="info-box">
+      Après l'installation, la commande <code>latex_updates</code> est disponible
+      partout dans votre terminal — pas besoin d'être dans le répertoire du script.
+    </div>
+
+    <h3>1 — Installer le paquet</h3>
+    <div class="terminal">
+      <div class="terminal-bar">
+        <span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span>
+      </div>
+      <pre><code><span class="cm"># Directement depuis GitHub (recommandé)</span>
+<span class="prompt">$</span> pip install git+https://github.com/eartigau/latex-updates.git
+
+<span class="cm"># Ou cloner et installer localement</span>
+<span class="prompt">$</span> git clone https://github.com/eartigau/latex-updates.git
+<span class="prompt">$</span> pip install ./latex-updates</code></pre>
+    </div>
+
+    <h3>2 — Installer latexdiff</h3>
+    <div class="terminal">
+      <div class="terminal-bar">
+        <span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span>
+      </div>
+      <pre><code><span class="cm"># macOS (Homebrew)</span>
+<span class="prompt">$</span> brew install latexdiff
+
+<span class="cm"># Debian / Ubuntu</span>
+<span class="prompt">$</span> sudo apt install latexdiff
+
+<span class="cm"># TeX Live (toutes plateformes)</span>
+<span class="prompt">$</span> tlmgr install latexdiff</code></pre>
+    </div>
+
+    <p>
+      <code>pdflatex</code> n'est nécessaire que pour la compilation automatique du PDF ;
+      en son absence, <code>latex_updates</code> produit quand même le fichier
+      <code>.tex</code> et indique comment le compiler manuellement.
+      Aucune dépendance Python au-delà de la bibliothèque standard n'est requise.
+    </p>
+  </section>
+
+  <!-- Démarrage rapide -->
+  <section id="quickstart">
+    <h2>Démarrage rapide</h2>
+    <p>Essayez les manuscrits de démonstration inclus (cloner le dépôt d'abord pour les obtenir) :</p>
+
+    <div class="terminal">
+      <div class="terminal-bar">
+        <span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span>
+      </div>
+      <pre><code><span class="prompt">$</span> latex_updates demo/demo_old.tex demo/demo_new.tex
+
+<span class="out">latex_updates: generating diff between
+  old: demo/demo_old.tex
+  new: demo/demo_new.tex
+
+  Cleaning demo_old.tex (strip {\bf} markup)...
+  Cleaning demo_new.tex (strip bare groups)...
+  Running latexdiff...
+  Inserting colour definitions and toggle...
+
+  Diff source → demo/diff_demo_new.tex
+  Compiling PDF (2 passes)...
+  Diff PDF    → demo/diff_demo_new.pdf
+
+Done.</span></code></pre>
+    </div>
+
+    <p>Ouvrez <code>demo/diff_demo_new.pdf</code> pour voir le résultat.</p>
+  </section>
+
+  <!-- Utilisation -->
+  <section id="usage">
+    <h2>Utilisation</h2>
+    <pre><code>latex_updates ANCIEN.tex NOUVEAU.tex [options]</code></pre>
+
+    <table>
+      <thead>
+        <tr><th>Argument / option</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>ANCIEN.tex</code></td>
+            <td>Version précédente du manuscrit</td></tr>
+        <tr><td><code>NOUVEAU.tex</code></td>
+            <td>Version révisée du manuscrit</td></tr>
+        <tr><td><code>-o FICHIER</code> / <code>--output FICHIER</code></td>
+            <td>Nom du fichier de sortie.<br>Par défaut : <code>diff_&lt;NOUVEAU&gt;.tex</code> dans le même répertoire</td></tr>
+        <tr><td><code>--no-compile</code></td>
+            <td>Ne pas compiler avec pdflatex ; produit uniquement le <code>.tex</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3>Exemples</h3>
+    <pre><code><span class="cm"># Basique — produit diff_v2_papier.tex et diff_v2_papier.pdf</span>
+<span class="prompt">$</span> latex_updates v1_papier.tex v2_papier.tex
+
+<span class="cm"># Nom de sortie personnalisé (pratique pour envoyer au rapporteur)</span>
+<span class="prompt">$</span> latex_updates ancien.tex nouveau.tex -o pour_rapporteur.tex
+
+<span class="cm"># Générer le .tex uniquement, compiler plus tard</span>
+<span class="prompt">$</span> latex_updates ancien.tex nouveau.tex --no-compile
+<span class="prompt">$</span> pdflatex diff_nouveau.tex</code></pre>
+  </section>
+
+  <!-- Bascule -->
+  <section id="toggle">
+    <h2>Afficher ou masquer le texte supprimé</h2>
+    <p>
+      Chaque fichier <code>.tex</code> généré contient une bascule près du début
+      qui permet de changer de mode sans relancer le script :
+    </p>
+
+    <div class="toggle-box">
+      <p><strong>Afficher le texte supprimé</strong> (par défaut — pour la réponse au rapporteur)</p>
+      <pre><code>\newif\ifshowdel
+<span class="kw">\showdeltrue</span>   <span class="cm">% ← texte supprimé en orange</span></code></pre>
+    </div>
+
+    <div class="toggle-box">
+      <p><strong>Masquer le texte supprimé</strong> (copie propre pour la re-soumission)</p>
+      <pre><code>\newif\ifshowdel
+<span class="kw">\showdelfalse</span>  <span class="cm">% ← texte supprimé invisible</span></code></pre>
+    </div>
+
+    <p>
+      Modifiez la ligne dans le fichier <code>.tex</code> et recompilez — aucune
+      autre modification n'est nécessaire.
+    </p>
+  </section>
+
+  <!-- Fonctionnement -->
+  <section id="how">
+    <h2>Fonctionnement</h2>
+
+    <div class="cards">
+      <div class="card">
+        <div class="num">1</div>
+        <h3>Nettoyer l'ancien fichier</h3>
+        <p>Supprimer les balises <code>{\bf …}</code> et <code>\textbf{…}</code>
+           ajoutées lors des rondes de révision précédentes.</p>
+      </div>
+      <div class="card">
+        <div class="num">2</div>
+        <h3>Nettoyer le nouveau fichier</h3>
+        <p>Éliminer les groupes <code>{ }</code> nus résiduels issus de la
+           conversion <code>{\bf}</code> → <code>{ }</code>.</p>
+      </div>
+      <div class="card">
+        <div class="num">3</div>
+        <h3>Lancer latexdiff</h3>
+        <p>Différence mot à mot avec protection des environnements mathématiques.
+           Le préambule latexdiff est conservé.</p>
+      </div>
+      <div class="card">
+        <div class="num">4</div>
+        <h3>Injecter les couleurs</h3>
+        <p>Bleu pour les ajouts, orange barré pour les suppressions.
+           La bascule est injectée avant <code>\begin{document}</code>.</p>
+      </div>
+      <div class="card">
+        <div class="num">5</div>
+        <h3>Compiler le PDF</h3>
+        <p>Deux passes <code>pdflatex</code> résolvent les références croisées
+           et produisent le PDF final.</p>
+      </div>
+    </div>
+
+    <h3>Référence des couleurs</h3>
+    <div class="colour-demo">
+      Le taux d'occurrence était précédemment
+      <span class="del">$f = 1.4^{+0.6}_{-0.4}$\,\%</span>
+      <span class="add">$f = 1.07^{+0.31}_{-0.24}$\,\%</span>, révisé à la baisse
+      avec <span class="add">l'échantillon étendu de 2 126 étoiles et les corrections
+      de complétude améliorées.</span>
+    </div>
+
+    <h3>Compatible avec toutes les classes LaTeX</h3>
+    <p>
+      Testé avec <code>article</code>, <code>aa</code>
+      (classe A&amp;A), <code>aastex63</code> (journaux AAS) et
+      <code>mnras</code>. N'altère aucune commande propre à ces classes.
+    </p>
+  </section>
+
+  <!-- Démonstration -->
+  <section id="demo">
+    <h2>Manuscrits de démonstration</h2>
+    <p>
+      Le dossier <code>demo/</code> contient deux articles d'astronomie réalistes
+      illustrant des soumissions typiques de premier et de deuxième tour.
+    </p>
+
+    <table>
+      <thead>
+        <tr><th>Fichier</th><th>Contenu</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>demo/demo_old.tex</code></td>
+          <td>Première soumission : échantillon de 1&thinsp;800 étoiles, 14 compagnons récupérés,
+              taux 1,4 %, pente de séparation β = −0,9</td>
+        </tr>
+        <tr>
+          <td><code>demo/demo_new.tex</code></td>
+          <td>Révisé après le rapporteur : 2&thinsp;126 étoiles, 17 compagnons + 2 nouveaux
+              candidats, taux 1,07 %, β = −1,38, nouvelle section Discussion</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      Les modifications couvrent : des chiffres mis à jour dans le résumé, un nouveau
+      paragraphe d'introduction sur les modèles de formation, une ligne supplémentaire
+      dans le tableau des résultats, un nouveau tableau MCMC et une section Discussion
+      complète — offrant un éventail représentatif de types de différences.
+    </p>
+
+    <a class="cta" href="https://github.com/eartigau/latex-updates">
+      Voir sur GitHub →
+    </a>
+  </section>
+
+</main>
+
+<footer>
+  <p>
+    <a href="https://github.com/eartigau/latex-updates">latex_updates</a>
+    &nbsp;·&nbsp; Licence MIT
+    &nbsp;·&nbsp; <a href="https://eartigau.github.io/index_fr.html">eartigau.github.io</a>
+  </p>
+</footer>
+
+</body>
+</html>

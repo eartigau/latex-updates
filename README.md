@@ -12,7 +12,7 @@ A one-line toggle controls whether deleted text is visible in the PDF.
 
 | Tool | Purpose | Install |
 |------|---------|---------|
-| Python ≥ 3.10 | runs the script | [python.org](https://python.org) |
+| Python ≥ 3.10 | runs the package | [python.org](https://python.org) |
 | `latexdiff` | computes the diff | see below |
 | `pdflatex` | compiles the PDF | part of any TeX distribution |
 
@@ -33,13 +33,30 @@ No Python packages beyond the standard library are required.
 
 ---
 
+## Installation
+
+Install directly from GitHub — the `latex_updates` command will be available
+everywhere in your terminal:
+
+```bash
+pip install git+https://github.com/eartigau/latex-updates.git
+```
+
+Or clone and install locally:
+
+```bash
+git clone https://github.com/eartigau/latex-updates.git
+pip install ./latex-updates
+```
+
+---
+
 ## Quick start
 
 ```bash
-git clone https://github.com/eartigau/latex_updates.git
-cd latex_updates
-
-python latex_updates.py demo/demo_old.tex demo/demo_new.tex
+git clone https://github.com/eartigau/latex-updates.git
+cd latex-updates
+latex_updates demo/demo_old.tex demo/demo_new.tex
 ```
 
 This produces:
@@ -53,7 +70,7 @@ demo/diff_demo_new.pdf   ← compiled PDF
 ## Usage
 
 ```
-python latex_updates.py OLD.tex NEW.tex [options]
+latex_updates OLD.tex NEW.tex [options]
 ```
 
 | Argument | Description |
@@ -67,13 +84,13 @@ python latex_updates.py OLD.tex NEW.tex [options]
 
 ```bash
 # Basic usage — produces diff_v2_paper.tex and diff_v2_paper.pdf
-python latex_updates.py v1_paper.tex v2_paper.tex
+latex_updates v1_paper.tex v2_paper.tex
 
 # Custom output name
-python latex_updates.py old.tex new.tex -o for_referee.tex
+latex_updates old.tex new.tex -o for_referee.tex
 
 # Generate .tex only (compile later)
-python latex_updates.py old.tex new.tex --no-compile
+latex_updates old.tex new.tex --no-compile
 pdflatex diff_new.tex
 ```
 
@@ -116,7 +133,7 @@ any standard LaTeX installation, including the A&A (`aa.cls`) document class.
 | Removed text | Orange + strikethrough | `{\color{orange}\sout{…}}` |
 
 The colours can be customised by editing the `TOGGLE_PREAMBLE` string in
-`latex_updates.py`.
+`latex_updates/__init__.py`.
 
 ---
 
@@ -131,7 +148,7 @@ The `demo/` directory contains two realistic astronomy manuscripts:
 
 Run:
 ```bash
-python latex_updates.py demo/demo_old.tex demo/demo_new.tex
+latex_updates demo/demo_old.tex demo/demo_new.tex
 ```
 
 ---

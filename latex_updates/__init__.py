@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 """
-latex_updates.py — A&A-style tracked-changes diff between two LaTeX manuscripts.
+latex_updates — A&A-style tracked-changes diff between two LaTeX manuscripts.
 
   New text   : BLUE
-  Removed text: ORANGE with strikethrough
+  Removed text: ORANGE with wavy strikethrough
 
 A showdeltrue / showdelfalse toggle in the output file controls
 whether deleted text is rendered or hidden entirely.
 
 Usage:
-    python latex_updates.py old.tex new.tex
-    python latex_updates.py old.tex new.tex --output changes.tex
-    python latex_updates.py old.tex new.tex --no-compile
+    latex_updates old.tex new.tex
+    latex_updates old.tex new.tex --output changes.tex
+    latex_updates old.tex new.tex --no-compile
 
 Requirements:
     latexdiff   (brew install latexdiff  /  apt install latexdiff  /  tlmgr install latexdiff)
@@ -159,14 +159,25 @@ TOGGLE_PREAMBLE = r"""
 \newif\ifshowdel
 \showdeltrue
 
-%% A&A-style colour overrides for latexdiff markup.
+%% latexdiff loads the 'color' package, which lacks named colours beyond the
+%% basic set.  Define orange here so \color{orange} works regardless.
+\definecolor{orange}{rgb}{1.0,0.55,0.0}
+
+%% Wavy strikethrough for deleted text.
+%% Follows the exact pattern of ulem's \sout / \uwave: \bgroup + params + \ULon
+%% with no explicit argument or \egroup.  The braces at the call site (e.g.
+%% \DIFwavestrike{text}) supply the argument to \ULon and close the \bgroup.
+\DeclareRobustCommand*\DIFwavestrike{\bgroup \ULdepth=-.5ex
+  \markoverwith{\hbox{\sixly\char58}}\ULon}
+
+%% Colour overrides for latexdiff markup.
 %% \long\def allows arguments that span paragraph breaks.
 \long\def\DIFadd#1{{\color{blue}#1}}
 \long\def\DIFaddtex#1{{\color{blue}#1}}
 \long\def\DIFaddFL#1{\DIFadd{#1}}
 
-\long\def\DIFdel#1{\ifshowdel{\color{orange}\sout{#1}}\fi}
-\long\def\DIFdeltex#1{\ifshowdel{\color{orange}\sout{#1}}\fi}
+\long\def\DIFdel#1{\ifshowdel{\color{orange}\DIFwavestrike{#1}}\fi}
+\long\def\DIFdeltex#1{\ifshowdel{\color{orange}\DIFwavestrike{#1}}\fi}
 \long\def\DIFdelFL#1{\DIFdel{#1}}
 
 %% Make the float-environment begin/end markers truly empty so that
@@ -215,7 +226,6 @@ def run_latexdiff(old_path: Path, new_path: Path) -> str:
     if result.returncode != 0:
         sys.exit(f'latexdiff failed:\n{result.stderr[:1000]}')
     if result.stderr.strip():
-        # Print non-fatal warnings so the user is aware
         for line in result.stderr.splitlines()[:5]:
             print(f'  [latexdiff] {line}', file=sys.stderr)
     return result.stdout
@@ -325,7 +335,7 @@ def main() -> None:
         prog='latex_updates',
         description=(
             'Generate an A&A-style tracked-changes PDF from two LaTeX manuscripts.\n'
-            'New text is shown in BLUE; removed text in ORANGE with strikethrough.'
+            'New text is shown in BLUE; removed text in ORANGE with wavy strikethrough.'
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=textwrap.dedent("""\
@@ -334,9 +344,9 @@ def main() -> None:
               \\showdelfalse   — deleted text hidden
 
             Examples:
-              python latex_updates.py v1_paper.tex v2_paper.tex
-              python latex_updates.py old.tex new.tex -o changes.tex
-              python latex_updates.py old.tex new.tex --no-compile
+              latex_updates v1_paper.tex v2_paper.tex
+              latex_updates old.tex new.tex -o changes.tex
+              latex_updates old.tex new.tex --no-compile
         """),
     )
     parser.add_argument('old', help='Old version of the manuscript (.tex)')
