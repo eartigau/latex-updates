@@ -296,6 +296,28 @@
       color: #1e3a5f;
     }
 
+    .journal-table td:first-child { white-space: nowrap; }
+    .jbadge {
+      display: inline-block;
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      color: #3730a3;
+      font-size: 0.78rem;
+      font-weight: 600;
+      font-family: monospace;
+      padding: 0.15em 0.5em;
+      border-radius: 4px;
+      margin-right: 0.3em;
+    }
+    .snapshot-wrap {
+      margin: 1.2rem 0;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    .snapshot-wrap img { display: block; width: 100%; height: auto; }
+
     footer {
       text-align: center;
       padding: 2rem;
@@ -335,6 +357,7 @@
       <li><a href="#quickstart">Quick start</a></li>
       <li><a href="#usage">Usage</a></li>
       <li><a href="#toggle">Toggle</a></li>
+      <li><a href="#journals">Journals</a></li>
       <li><a href="#how">How it works</a></li>
       <li><a href="#demo">Demo</a></li>
       <li><a href="https://github.com/eartigau/latex-updates">GitHub</a></li>
@@ -483,6 +506,79 @@ Done.</span></code></pre>
     </p>
   </section>
 
+  <!-- Journal support -->
+  <section id="journals">
+    <h2>Journal support</h2>
+    <p>
+      <code>latex_updates</code> reads the <code>\documentclass</code> declaration
+      of your <strong>new</strong> file and automatically applies the right
+      <code>latexdiff</code> options for that journal — no flags needed.
+    </p>
+
+    <table class="journal-table">
+      <thead>
+        <tr><th>Journal / template</th><th>Detected class</th><th>Special handling</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Astronomy &amp; Astrophysics (A&amp;A)</td>
+          <td><code>\documentclass{aa}</code></td>
+          <td>
+            A&amp;A's <code>\abstract</code> takes 5 arguments
+            (context / aims / methods / results / conclusions).
+            The tool treats it as a context command so deleted abstracts compile cleanly.
+            <code>\subtitle</code> is excluded from text-level diffing.
+          </td>
+        </tr>
+        <tr>
+          <td>AASTeX (ApJ, AJ, ApJL, PASP)</td>
+          <td><code>\documentclass{aastex63}</code> <em>etc.</em></td>
+          <td>
+            Author-metadata commands
+            (<code>\affiliation</code>, <code>\correspondingauthor</code>,
+            <code>\email</code>, <code>\received</code>, …)
+            are excluded from text-level diffing to avoid markup errors.
+          </td>
+        </tr>
+        <tr>
+          <td>Monthly Notices of the RAS (MNRAS)</td>
+          <td><code>\documentclass{mnras}</code></td>
+          <td>
+            Uses a standard <code>abstract</code> environment — no special handling needed.
+          </td>
+        </tr>
+        <tr>
+          <td>Any other class</td>
+          <td>—</td>
+          <td>Generic mode: standard <code>latexdiff</code> with math-mode protection.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>The detected journal is printed at the start of every run:</p>
+
+    <div class="terminal">
+      <div class="terminal-bar">
+        <span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span>
+      </div>
+      <pre><code><span class="prompt">$</span> latex_updates old.tex new.tex
+
+<span class="out">latex_updates: generating diff between
+  old: old.tex
+  new: new.tex
+
+  Detected journal: Astronomy &amp; Astrophysics (A&amp;A)
+  Cleaning old.tex (strip {\bf} markup)...
+  ...</span></code></pre>
+    </div>
+
+    <p>
+      Want support for another journal?
+      <a href="https://github.com/eartigau/latex-updates/issues">Open an issue on GitHub</a>
+      — adding a new profile is a few lines of Python.
+    </p>
+  </section>
+
   <!-- How it works -->
   <section id="how">
     <h2>How it works</h2>
@@ -569,6 +665,11 @@ Done.</span></code></pre>
       results table, a new MCMC results table, and a full new Discussion
       section — giving a representative range of diff types.
     </p>
+
+    <div class="snapshot-wrap">
+      <img src="demo/snapshot.png"
+           alt="Three-panel comparison: original manuscript, revised manuscript, and tracked-changes output with blue additions and orange strikethrough deletions">
+    </div>
 
     <a class="cta" href="https://github.com/eartigau/latex-updates">
       View on GitHub →

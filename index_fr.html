@@ -296,6 +296,28 @@
       color: #1e3a5f;
     }
 
+    .journal-table td:first-child { white-space: nowrap; }
+    .jbadge {
+      display: inline-block;
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      color: #3730a3;
+      font-size: 0.78rem;
+      font-weight: 600;
+      font-family: monospace;
+      padding: 0.15em 0.5em;
+      border-radius: 4px;
+      margin-right: 0.3em;
+    }
+    .snapshot-wrap {
+      margin: 1.2rem 0;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    .snapshot-wrap img { display: block; width: 100%; height: auto; }
+
     footer {
       text-align: center;
       padding: 2rem;
@@ -335,6 +357,7 @@
       <li><a href="#quickstart">Démarrage rapide</a></li>
       <li><a href="#usage">Utilisation</a></li>
       <li><a href="#toggle">Bascule</a></li>
+      <li><a href="#journals">Revues</a></li>
       <li><a href="#how">Fonctionnement</a></li>
       <li><a href="#demo">Démonstration</a></li>
       <li><a href="https://github.com/eartigau/latex-updates">GitHub</a></li>
@@ -483,6 +506,83 @@ Done.</span></code></pre>
     </p>
   </section>
 
+  <!-- Support des revues -->
+  <section id="journals">
+    <h2>Support des revues scientifiques</h2>
+    <p>
+      <code>latex_updates</code> lit la déclaration <code>\documentclass</code>
+      de votre fichier <strong>nouveau</strong> et applique automatiquement les
+      bonnes options <code>latexdiff</code> pour cette revue — aucun argument
+      supplémentaire n'est nécessaire.
+    </p>
+
+    <table class="journal-table">
+      <thead>
+        <tr><th>Revue / gabarit</th><th>Classe détectée</th><th>Traitement particulier</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Astronomy &amp; Astrophysics (A&amp;A)</td>
+          <td><code>\documentclass{aa}</code></td>
+          <td>
+            La commande <code>\abstract</code> d'A&amp;A prend 5 arguments
+            (contexte / objectifs / méthodes / résultats / conclusions).
+            L'outil la traite comme une commande de contexte pour que les
+            résumés supprimés compilent proprement.
+            <code>\subtitle</code> est exclu de la comparaison mot à mot.
+          </td>
+        </tr>
+        <tr>
+          <td>AASTeX (ApJ, AJ, ApJL, PASP)</td>
+          <td><code>\documentclass{aastex63}</code> <em>etc.</em></td>
+          <td>
+            Les commandes de métadonnées d'auteur
+            (<code>\affiliation</code>, <code>\correspondingauthor</code>,
+            <code>\email</code>, <code>\received</code>, …)
+            sont exclues de la comparaison mot à mot pour éviter des erreurs de balisage.
+          </td>
+        </tr>
+        <tr>
+          <td>Monthly Notices of the RAS (MNRAS)</td>
+          <td><code>\documentclass{mnras}</code></td>
+          <td>
+            Utilise un environnement <code>abstract</code> standard — aucun traitement
+            particulier nécessaire.
+          </td>
+        </tr>
+        <tr>
+          <td>Toute autre classe</td>
+          <td>—</td>
+          <td>Mode générique : <code>latexdiff</code> standard avec protection des
+              environnements mathématiques.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>La revue détectée est affichée au début de chaque exécution :</p>
+
+    <div class="terminal">
+      <div class="terminal-bar">
+        <span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span>
+      </div>
+      <pre><code><span class="prompt">$</span> latex_updates ancien.tex nouveau.tex
+
+<span class="out">latex_updates: generating diff between
+  old: ancien.tex
+  new: nouveau.tex
+
+  Detected journal: Astronomy &amp; Astrophysics (A&amp;A)
+  Cleaning ancien.tex (strip {\bf} markup)...
+  ...</span></code></pre>
+    </div>
+
+    <p>
+      Vous souhaitez le support d'une autre revue ?
+      <a href="https://github.com/eartigau/latex-updates/issues">Ouvrez une issue sur GitHub</a>
+      — ajouter un nouveau profil ne demande que quelques lignes de Python.
+    </p>
+  </section>
+
   <!-- Fonctionnement -->
   <section id="how">
     <h2>Fonctionnement</h2>
@@ -569,6 +669,11 @@ Done.</span></code></pre>
       dans le tableau des résultats, un nouveau tableau MCMC et une section Discussion
       complète — offrant un éventail représentatif de types de différences.
     </p>
+
+    <div class="snapshot-wrap">
+      <img src="demo/snapshot.png"
+           alt="Comparaison en trois panneaux : manuscrit original, manuscrit révisé et sortie avec suivi des modifications (ajouts en bleu, suppressions en orange barré)">
+    </div>
 
     <a class="cta" href="https://github.com/eartigau/latex-updates">
       Voir sur GitHub →
