@@ -15,10 +15,49 @@
       line-height: 1.7;
     }
 
+    /* ── Barre supérieure : accueil + langue ── */
+    .topbar {
+      background: rgba(0,0,0,0.35);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.45rem 1.5rem;
+      position: relative;
+      z-index: 2;
+    }
+    .topbar a {
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .topbar a:hover { color: #fff; }
+    .topbar .home-link::before { content: "← "; }
+    .lang-switcher {
+      display: flex;
+      gap: 4px;
+      background: rgba(255,255,255,0.12);
+      border-radius: 6px;
+      padding: 3px;
+    }
+    .lang-switcher a {
+      padding: 0.18rem 0.55rem;
+      border-radius: 4px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    .lang-switcher a.active {
+      background: #fff;
+      color: #0f3460 !important;
+    }
+
+    /* ── En-tête principal ── */
     header {
       background: linear-gradient(135deg, #0f3460 0%, #16213e 60%, #0d1b2a 100%);
       color: #fff;
-      padding: 4rem 2rem 3rem;
+      padding: 3rem 2rem 2.5rem;
       text-align: center;
       position: relative;
       overflow: hidden;
@@ -29,7 +68,7 @@
       background: radial-gradient(ellipse at 70% 30%, rgba(22,160,133,0.15) 0%, transparent 60%);
     }
     header h1 {
-      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-size: clamp(2rem, 5vw, 3.2rem);
       font-weight: 700;
       letter-spacing: -0.02em;
       position: relative;
@@ -39,17 +78,17 @@
       color: #4ecdc4;
     }
     header p.tagline {
-      margin-top: 1rem;
-      font-size: 1.2rem;
-      opacity: 0.85;
-      max-width: 640px;
+      margin-top: 0.9rem;
+      font-size: 1.15rem;
+      opacity: 0.88;
+      max-width: 620px;
       margin-inline: auto;
       position: relative;
     }
     .badge-row {
-      margin-top: 1.5rem;
+      margin-top: 1.4rem;
       display: flex;
-      gap: 0.6rem;
+      gap: 0.5rem;
       justify-content: center;
       flex-wrap: wrap;
       position: relative;
@@ -57,28 +96,28 @@
     .badge {
       display: inline-flex;
       align-items: center;
-      gap: 0.35rem;
       background: rgba(255,255,255,0.12);
       border: 1px solid rgba(255,255,255,0.2);
       color: #e0e0e0;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       font-family: monospace;
-      padding: 0.3rem 0.7rem;
+      padding: 0.25rem 0.65rem;
       border-radius: 20px;
     }
     .demo-colours {
-      margin-top: 2rem;
+      margin-top: 1.8rem;
       display: inline-flex;
-      gap: 1.5rem;
+      gap: 2rem;
       background: rgba(0,0,0,0.3);
       border-radius: 12px;
-      padding: 0.75rem 1.5rem;
+      padding: 0.7rem 1.4rem;
       position: relative;
     }
-    .demo-colours span { font-size: 1.05rem; font-weight: 500; }
+    .demo-colours span { font-size: 1rem; font-weight: 500; }
     .added   { color: #60a5fa; }
     .removed { color: #fb923c; text-decoration: line-through; }
 
+    /* ── Barre de navigation fixe ── */
     nav {
       background: #fff;
       border-bottom: 1px solid #e2e8f0;
@@ -88,49 +127,26 @@
       max-width: 960px;
       margin: 0 auto;
       padding: 0 1.5rem;
-      display: flex;
-      align-items: center;
     }
     nav ul {
       display: flex;
-      gap: 0.25rem;
+      gap: 0;
       list-style: none;
       overflow-x: auto;
-      flex: 1;
     }
     nav a {
       display: inline-block;
-      padding: 0.85rem 0.9rem;
+      padding: 0.8rem 0.85rem;
       color: #4a5568;
       text-decoration: none;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 500;
       white-space: nowrap;
       transition: color 0.2s;
     }
     nav a:hover { color: #0f3460; }
-    .nav-lang {
-      display: flex;
-      gap: 4px;
-      padding: 4px;
-      background: #f1f5f9;
-      border-radius: 8px;
-      margin-left: 1rem;
-      flex-shrink: 0;
-    }
-    .nav-lang a {
-      padding: 0.3rem 0.65rem;
-      border-radius: 5px;
-      font-size: 0.82rem;
-      font-weight: 700;
-      color: #718096;
-      text-decoration: none;
-    }
-    .nav-lang a.active {
-      background: #0f3460;
-      color: #fff;
-    }
 
+    /* ── Contenu principal ── */
     main {
       max-width: 900px;
       margin: 0 auto;
@@ -139,7 +155,7 @@
 
     section { margin-bottom: 3.5rem; }
     h2 {
-      font-size: 1.65rem;
+      font-size: 1.6rem;
       font-weight: 700;
       color: #0f3460;
       margin-bottom: 1rem;
@@ -147,7 +163,7 @@
       border-bottom: 2px solid #e2e8f0;
     }
     h3 {
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       font-weight: 600;
       color: #2d3748;
       margin: 1.5rem 0 0.6rem;
@@ -185,7 +201,6 @@
       font-size: 0.875rem;
       line-height: 1.6;
       margin: 0.75rem 0 1rem;
-      position: relative;
     }
     code {
       font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
@@ -200,9 +215,6 @@
     }
     .kw  { color: #c084fc; }
     .cm  { color: #64748b; font-style: italic; }
-    .st  { color: #86efac; }
-    .nb  { color: #60a5fa; }
-    .op  { color: #f472b6; }
 
     .terminal {
       background: #0d1b2a;
@@ -255,7 +267,7 @@
       padding: 1.2rem 1.4rem;
       font-family: "Times New Roman", Georgia, serif;
       font-size: 1.05rem;
-      line-height: 1.8;
+      line-height: 1.9;
       color: #1a202c;
       margin: 0.75rem 0;
     }
@@ -297,18 +309,6 @@
     }
 
     .journal-table td:first-child { white-space: nowrap; }
-    .jbadge {
-      display: inline-block;
-      background: #eef2ff;
-      border: 1px solid #c7d2fe;
-      color: #3730a3;
-      font-size: 0.78rem;
-      font-weight: 600;
-      font-family: monospace;
-      padding: 0.15em 0.5em;
-      border-radius: 4px;
-      margin-right: 0.3em;
-    }
     .snapshot-wrap {
       margin: 1.2rem 0;
       border-radius: 10px;
@@ -332,21 +332,28 @@
 <body>
 
 <header>
+  <div class="topbar">
+    <a href="https://eartigau.github.io/index_fr.html" class="home-link">eartigau.github.io</a>
+    <div class="lang-switcher">
+      <a href="index_en.html">EN</a>
+      <a href="index_fr.html" class="active">FR</a>
+    </div>
+  </div>
+
   <h1><span class="mono">latex_updates</span></h1>
   <p class="tagline">
-    Génère des PDFs avec suivi de modifications à partir de deux manuscrits LaTeX.
-    Nouveau texte en bleu, texte supprimé en orange barré.
-    S'installe une fois, s'utilise partout.
+    Transformez deux versions d'un manuscrit LaTeX en PDF avec suivi des modifications,
+    en une seule commande. Ajouts en bleu · suppressions en orange barré.
   </p>
   <div class="badge-row">
     <span class="badge">Python ≥ 3.10</span>
     <span class="badge">latexdiff</span>
+    <span class="badge">A&amp;A · AASTeX · MNRAS</span>
     <span class="badge">Licence MIT</span>
-    <span class="badge">pip install</span>
   </div>
   <div class="demo-colours">
-    <span class="added">le nouveau texte apparaît ainsi</span>
-    <span class="removed">l'ancien texte apparaît ainsi</span>
+    <span class="added">le texte ajouté apparaît ainsi</span>
+    <span class="removed">le texte supprimé apparaît ainsi</span>
   </div>
 </header>
 
@@ -354,23 +361,43 @@
   <div class="nav-inner">
     <ul>
       <li><a href="#install">Installation</a></li>
-      <li><a href="#quickstart">Démarrage rapide</a></li>
+      <li><a href="#quickstart">Démarrage&nbsp;rapide</a></li>
       <li><a href="#usage">Utilisation</a></li>
       <li><a href="#toggle">Bascule</a></li>
       <li><a href="#journals">Revues</a></li>
       <li><a href="#how">Fonctionnement</a></li>
       <li><a href="#demo">Démonstration</a></li>
-      <li><a href="https://github.com/eartigau/latex-updates">GitHub</a></li>
-      <li><a href="https://eartigau.github.io/index_fr.html">← Page d'accueil</a></li>
+      <li><a href="https://github.com/eartigau/latex-updates">GitHub ↗</a></li>
     </ul>
-    <div class="nav-lang">
-      <a href="index_en.html">EN</a>
-      <a href="index_fr.html" class="active">FR</a>
-    </div>
   </div>
 </nav>
 
 <main>
+
+  <!-- Pourquoi -->
+  <section id="why">
+    <h2>Quel problème cet outil résout-il ?</h2>
+    <p>
+      Lors de la resoumission d'un article après les commentaires du rapporteur,
+      la plupart des revues exigent une version avec suivi des modifications
+      pour que le lecteur puisse identifier immédiatement ce qui a changé.
+      Produire ce document manuellement est fastidieux et source d'erreurs.
+    </p>
+    <p>
+      <code>latex_updates</code> automatise l'ensemble du processus : nettoyage
+      des fichiers sources, exécution de <code>latexdiff</code> avec les réglages
+      adaptés à la revue, injection des définitions de couleurs, et compilation du PDF —
+      le tout en une seule commande. Le résultat est un document professionnel où
+      chaque ajout est mis en évidence en <strong style="color:#2563eb">bleu</strong>
+      et chaque suppression apparaît en
+      <strong style="color:#ea580c; text-decoration:line-through">orange barré d'une vague</strong>.
+    </p>
+    <p>
+      Une bascule en une ligne dans le fichier généré permet de passer de la version
+      annotée (pour le rapporteur) à une copie propre (pour la resoumission)
+      sans relancer la commande.
+    </p>
+  </section>
 
   <!-- Installation -->
   <section id="install">
@@ -378,28 +405,31 @@
 
     <div class="info-box">
       Après l'installation, la commande <code>latex_updates</code> est disponible
-      partout dans votre terminal — pas besoin d'être dans le répertoire du script.
+      partout dans votre terminal — inutile d'être dans le répertoire du script
+      ou d'activer un environnement particulier.
     </div>
 
-    <h3>1 — Installer le paquet</h3>
+    <h3>1 — Installer le paquet Python</h3>
     <div class="terminal">
       <div class="terminal-bar">
         <span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span>
       </div>
-      <pre><code><span class="cm"># Directement depuis GitHub (recommandé)</span>
+      <pre><code><span class="cm"># Recommandé : installer directement depuis GitHub</span>
 <span class="prompt">$</span> pip install git+https://github.com/eartigau/latex-updates.git
 
-<span class="cm"># Ou cloner et installer localement</span>
+<span class="cm"># Alternative : cloner et installer localement</span>
 <span class="prompt">$</span> git clone https://github.com/eartigau/latex-updates.git
 <span class="prompt">$</span> pip install ./latex-updates</code></pre>
     </div>
 
     <h3>2 — Installer latexdiff</h3>
+    <p><code>latexdiff</code> est le moteur de comparaison mot à mot utilisé en interne.
+       Installez-le une fois pour votre système :</p>
     <div class="terminal">
       <div class="terminal-bar">
         <span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span>
       </div>
-      <pre><code><span class="cm"># macOS (Homebrew)</span>
+      <pre><code><span class="cm"># macOS</span>
 <span class="prompt">$</span> brew install latexdiff
 
 <span class="cm"># Debian / Ubuntu</span>
@@ -409,31 +439,45 @@
 <span class="prompt">$</span> tlmgr install latexdiff</code></pre>
     </div>
 
+    <h3>3 — pdflatex (facultatif)</h3>
     <p>
-      <code>pdflatex</code> n'est nécessaire que pour la compilation automatique du PDF ;
-      en son absence, <code>latex_updates</code> produit quand même le fichier
-      <code>.tex</code> et indique comment le compiler manuellement.
-      Aucune dépendance Python au-delà de la bibliothèque standard n'est requise.
+      <code>pdflatex</code> est nécessaire uniquement pour la compilation automatique du PDF.
+      En son absence, <code>latex_updates</code> produit quand même le fichier
+      <code>.tex</code> et affiche la commande pour le compiler manuellement.
+      <code>pdflatex</code> fait partie de toute distribution TeX standard
+      (TeX Live, MiKTeX, MacTeX).
+    </p>
+    <p>
+      Si votre manuscrit utilise le style A&amp;A (<code>\documentclass{aa}</code>),
+      <code>latex_updates</code> cherche automatiquement <code>aa.cls</code> sur votre
+      système. S'il n'est pas dans le chemin TeX, installez-le avec
+      <code>tlmgr install aa</code> (TeX Live) ou
+      <code>sudo apt install texlive-publishers</code> (Debian/Ubuntu).
     </p>
   </section>
 
   <!-- Démarrage rapide -->
   <section id="quickstart">
     <h2>Démarrage rapide</h2>
-    <p>Essayez les manuscrits de démonstration inclus (cloner le dépôt d'abord pour les obtenir) :</p>
+    <p>
+      Le dépôt inclut deux manuscrits de démonstration pour tester l'outil
+      immédiatement après le clonage :
+    </p>
 
     <div class="terminal">
       <div class="terminal-bar">
         <span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span>
       </div>
-      <pre><code><span class="prompt">$</span> latex_updates demo/demo_old.tex demo/demo_new.tex
+      <pre><code><span class="prompt">$</span> git clone https://github.com/eartigau/latex-updates.git
+<span class="prompt">$</span> latex_updates latex-updates/demo/demo_old.tex \
+               latex-updates/demo/demo_new.tex
 
 <span class="out">latex_updates: generating diff between
   old: demo/demo_old.tex
   new: demo/demo_new.tex
 
-  Cleaning demo_old.tex (strip {\bf} markup)...
-  Cleaning demo_new.tex (strip bare groups)...
+  Cleaning demo_old.tex ...
+  Cleaning demo_new.tex ...
   Running latexdiff...
   Inserting colour definitions and toggle...
 
@@ -457,25 +501,34 @@ Done.</span></code></pre>
         <tr><th>Argument / option</th><th>Description</th></tr>
       </thead>
       <tbody>
-        <tr><td><code>ANCIEN.tex</code></td>
-            <td>Version précédente du manuscrit</td></tr>
-        <tr><td><code>NOUVEAU.tex</code></td>
-            <td>Version révisée du manuscrit</td></tr>
-        <tr><td><code>-o FICHIER</code> / <code>--output FICHIER</code></td>
-            <td>Nom du fichier de sortie.<br>Par défaut : <code>diff_&lt;NOUVEAU&gt;.tex</code> dans le même répertoire</td></tr>
-        <tr><td><code>--no-compile</code></td>
-            <td>Ne pas compiler avec pdflatex ; produit uniquement le <code>.tex</code></td></tr>
+        <tr>
+          <td><code>ANCIEN.tex</code></td>
+          <td>Version précédente du manuscrit (version soumise)</td>
+        </tr>
+        <tr>
+          <td><code>NOUVEAU.tex</code></td>
+          <td>Version révisée du manuscrit (après les commentaires du rapporteur)</td>
+        </tr>
+        <tr>
+          <td><code>-o FICHIER</code> / <code>--output FICHIER</code></td>
+          <td>Nom personnalisé pour le fichier de sortie.<br>
+              Par défaut : <code>diff_&lt;NOUVEAU&gt;.tex</code> dans le même répertoire.</td>
+        </tr>
+        <tr>
+          <td><code>--no-compile</code></td>
+          <td>Produire uniquement le fichier <code>.tex</code> ; ne pas lancer pdflatex.</td>
+        </tr>
       </tbody>
     </table>
 
     <h3>Exemples</h3>
-    <pre><code><span class="cm"># Basique — produit diff_v2_papier.tex et diff_v2_papier.pdf</span>
+    <pre><code><span class="cm"># Usage courant — produit diff_v2_papier.tex + diff_v2_papier.pdf</span>
 <span class="prompt">$</span> latex_updates v1_papier.tex v2_papier.tex
 
-<span class="cm"># Nom de sortie personnalisé (pratique pour envoyer au rapporteur)</span>
-<span class="prompt">$</span> latex_updates ancien.tex nouveau.tex -o pour_rapporteur.tex
+<span class="cm"># Nom de sortie personnalisé (pour envoyer au rapporteur)</span>
+<span class="prompt">$</span> latex_updates ancien.tex nouveau.tex -o modifications_rapporteur.tex
 
-<span class="cm"># Générer le .tex uniquement, compiler plus tard</span>
+<span class="cm"># Générer le .tex uniquement, compiler manuellement ensuite</span>
 <span class="prompt">$</span> latex_updates ancien.tex nouveau.tex --no-compile
 <span class="prompt">$</span> pdflatex diff_nouveau.tex</code></pre>
   </section>
@@ -484,25 +537,27 @@ Done.</span></code></pre>
   <section id="toggle">
     <h2>Afficher ou masquer le texte supprimé</h2>
     <p>
-      Chaque fichier <code>.tex</code> généré contient une bascule près du début
-      qui permet de changer de mode sans relancer le script :
+      Chaque fichier <code>.tex</code> généré contient une bascule près du début.
+      Modifiez un mot et recompilez — aucune autre modification n'est nécessaire :
     </p>
 
     <div class="toggle-box">
-      <p><strong>Afficher le texte supprimé</strong> (par défaut — pour la réponse au rapporteur)</p>
+      <p><strong>Afficher le texte supprimé</strong> — par défaut, pour la lettre de réponse au rapporteur</p>
       <pre><code>\newif\ifshowdel
-<span class="kw">\showdeltrue</span>   <span class="cm">% ← texte supprimé en orange</span></code></pre>
+<span class="kw">\showdeltrue</span>   <span class="cm">% texte supprimé en orange avec barre ondulée</span></code></pre>
     </div>
 
     <div class="toggle-box">
-      <p><strong>Masquer le texte supprimé</strong> (copie propre pour la re-soumission)</p>
+      <p><strong>Masquer le texte supprimé</strong> — copie propre pour la resoumission elle-même</p>
       <pre><code>\newif\ifshowdel
-<span class="kw">\showdelfalse</span>  <span class="cm">% ← texte supprimé invisible</span></code></pre>
+<span class="kw">\showdelfalse</span>  <span class="cm">% texte supprimé complètement invisible</span></code></pre>
     </div>
 
     <p>
-      Modifiez la ligne dans le fichier <code>.tex</code> et recompilez — aucune
-      autre modification n'est nécessaire.
+      Le même fichier <code>.tex</code> produit ainsi deux documents distincts
+      selon ce seul indicateur — pratique lorsqu'on a besoin à la fois de la version
+      annotée pour le rapporteur et d'une version propre pour le système de soumission
+      de la revue.
     </p>
   </section>
 
@@ -510,26 +565,27 @@ Done.</span></code></pre>
   <section id="journals">
     <h2>Support des revues scientifiques</h2>
     <p>
-      <code>latex_updates</code> lit la déclaration <code>\documentclass</code>
-      de votre fichier <strong>nouveau</strong> et applique automatiquement les
-      bonnes options <code>latexdiff</code> pour cette revue — aucun argument
-      supplémentaire n'est nécessaire.
+      <code>latex_updates</code> lit la ligne <code>\documentclass</code> de votre
+      manuscrit et applique automatiquement les bonnes options <code>latexdiff</code>
+      pour cette revue. Aucun argument supplémentaire, aucun fichier de configuration.
     </p>
 
     <table class="journal-table">
       <thead>
-        <tr><th>Revue / gabarit</th><th>Classe détectée</th><th>Traitement particulier</th></tr>
+        <tr><th>Revue</th><th>Classe détectée</th><th>Ce qui est géré automatiquement</th></tr>
       </thead>
       <tbody>
         <tr>
           <td>Astronomy &amp; Astrophysics (A&amp;A)</td>
           <td><code>\documentclass{aa}</code></td>
           <td>
-            La commande <code>\abstract</code> d'A&amp;A prend 5 arguments
-            (contexte / objectifs / méthodes / résultats / conclusions).
-            L'outil la traite comme une commande de contexte pour que les
-            résumés supprimés compilent proprement.
-            <code>\subtitle</code> est exclu de la comparaison mot à mot.
+            La commande <code>\abstract</code> d'A&amp;A prend cinq arguments
+            (contexte · objectifs · méthodes · résultats · conclusions).
+            <code>latexdiff</code> standard échoue sur cette syntaxe ;
+            <code>latex_updates</code> la traite comme un bloc entier pour
+            que les résumés supprimés compilent correctement.
+            <code>\subtitle</code> et les titres de sections sont exclus
+            de la comparaison mot à mot.
           </td>
         </tr>
         <tr>
@@ -539,47 +595,27 @@ Done.</span></code></pre>
             Les commandes de métadonnées d'auteur
             (<code>\affiliation</code>, <code>\correspondingauthor</code>,
             <code>\email</code>, <code>\received</code>, …)
-            sont exclues de la comparaison mot à mot pour éviter des erreurs de balisage.
+            sont exclues de la comparaison mot à mot ; leurs arguments structurés
+            ne peuvent pas être découpés sans risque par latexdiff.
           </td>
         </tr>
         <tr>
           <td>Monthly Notices of the RAS (MNRAS)</td>
           <td><code>\documentclass{mnras}</code></td>
-          <td>
-            Utilise un environnement <code>abstract</code> standard — aucun traitement
-            particulier nécessaire.
-          </td>
+          <td>Utilise un environnement <code>abstract</code> standard — aucun traitement particulier nécessaire.</td>
         </tr>
         <tr>
           <td>Toute autre classe</td>
           <td>—</td>
-          <td>Mode générique : <code>latexdiff</code> standard avec protection des
-              environnements mathématiques.</td>
+          <td>Mode générique : latexdiff standard avec protection des environnements mathématiques.</td>
         </tr>
       </tbody>
     </table>
 
-    <p>La revue détectée est affichée au début de chaque exécution :</p>
-
-    <div class="terminal">
-      <div class="terminal-bar">
-        <span class="dot-red"></span><span class="dot-yellow"></span><span class="dot-green"></span>
-      </div>
-      <pre><code><span class="prompt">$</span> latex_updates ancien.tex nouveau.tex
-
-<span class="out">latex_updates: generating diff between
-  old: ancien.tex
-  new: nouveau.tex
-
-  Detected journal: Astronomy &amp; Astrophysics (A&amp;A)
-  Cleaning ancien.tex (strip {\bf} markup)...
-  ...</span></code></pre>
-    </div>
-
     <p>
-      Vous souhaitez le support d'une autre revue ?
-      <a href="https://github.com/eartigau/latex-updates/issues">Ouvrez une issue sur GitHub</a>
-      — ajouter un nouveau profil ne demande que quelques lignes de Python.
+      Votre revue n'est pas dans la liste ?
+      <a href="https://github.com/eartigau/latex-updates/issues">Ouvrez une issue</a>
+      — ajouter un profil ne demande que quelques lignes de Python.
     </p>
   </section>
 
@@ -592,49 +628,44 @@ Done.</span></code></pre>
         <div class="num">1</div>
         <h3>Nettoyer l'ancien fichier</h3>
         <p>Supprimer les balises <code>{\bf …}</code> et <code>\textbf{…}</code>
-           ajoutées lors des rondes de révision précédentes.</p>
+           ajoutées manuellement lors des rondes de révision précédentes.</p>
       </div>
       <div class="card">
         <div class="num">2</div>
         <h3>Nettoyer le nouveau fichier</h3>
-        <p>Éliminer les groupes <code>{ }</code> nus résiduels issus de la
-           conversion <code>{\bf}</code> → <code>{ }</code>.</p>
+        <p>Éliminer les groupes <code>{ }</code> nus résiduels et normaliser
+           les commandes d'espacement qui perturbent l'analyseur de latexdiff.</p>
       </div>
       <div class="card">
         <div class="num">3</div>
         <h3>Lancer latexdiff</h3>
-        <p>Différence mot à mot avec protection des environnements mathématiques.
-           Le préambule latexdiff est conservé.</p>
+        <p>Comparaison mot à mot avec protection des environnements mathématiques
+           et options adaptées à la revue appliquées automatiquement.</p>
       </div>
       <div class="card">
         <div class="num">4</div>
         <h3>Injecter les couleurs</h3>
-        <p>Bleu pour les ajouts, orange barré pour les suppressions.
-           La bascule est injectée avant <code>\begin{document}</code>.</p>
+        <p>Ajouts en bleu, suppressions en orange barré d'une vague,
+           et l'indicateur <code>\showdel</code> — insérés avant <code>\begin{document}</code>.</p>
       </div>
       <div class="card">
         <div class="num">5</div>
         <h3>Compiler le PDF</h3>
         <p>Deux passes <code>pdflatex</code> résolvent les références croisées
-           et produisent le PDF final.</p>
+           et génèrent le PDF final automatiquement.</p>
       </div>
     </div>
 
     <h3>Référence des couleurs</h3>
     <div class="colour-demo">
-      L'excès de cordialité est
-      <span class="del">$f = 1.4^{+0.6}_{-0.4}$\,\%</span>
-      <span class="add">$f = 1.07^{+0.31}_{-0.24}$\,\%</span>, révisé à la baisse
-      par rapport à notre estimation précédente<span class="add">---ce qui est en soi suspect</span>.
+      Le taux d'occurrence des compagnons à grande séparation est
+      <span class="del">$f = 1{,}4^{+0{,}6}_{-0{,}4}$\,\%</span>
+      <span class="add">$f = 1{,}07^{+0{,}31}_{-0{,}24}$\,\%</span>,
+      révisé à la baisse après la correction de complétude mise à jour
+      <span class="add">(voir sect.&nbsp;4.3 pour la dérivation complète)</span>.
     </div>
-
-    <h3>Compatible avec toutes les classes LaTeX</h3>
-    <p>
-      Testé avec <code>article</code>, <code>aa</code>
-      (A&amp;A), <code>aastex63</code> (journaux AAS) et
-      <code>mnras</code>. Le traitement adapté à chaque revue est appliqué
-      automatiquement (voir la section <a href="#journals">Revues</a>).
-      N'altère aucune commande propre à ces classes.
+    <p style="font-size:0.88rem; color:#718096; margin-top:0.4rem;">
+      Bleu = texte ajouté &nbsp;·&nbsp; Orange barré = texte supprimé
     </p>
   </section>
 
@@ -642,44 +673,45 @@ Done.</span></code></pre>
   <section id="demo">
     <h2>Manuscrits de démonstration</h2>
     <p>
-      Le dossier <code>demo/</code> contient deux versions d'un article fictif
+      Le dossier <code>demo/</code> contient deux versions d'un court article fictif
       (<em>On the Statistically Suspicious Helpfulness of Artificial Minds</em>)
-      illustrant des soumissions typiques de premier et de deuxième tour.
+      rédigé pour couvrir un maximum de scénarios de différence dans un document compact.
     </p>
 
     <table>
       <thead>
-        <tr><th>Fichier</th><th>Constructions LaTeX illustrées</th></tr>
+        <tr><th>Fichier</th><th>Contenu</th></tr>
       </thead>
       <tbody>
         <tr>
           <td><code>demo/demo_old.tex</code></td>
-          <td>3 auteurs · titre · résumé avec math en ligne ·
-              4 sections · liste numérotée (3 items) ·
-              tableau à 4 lignes de données · bibliographie</td>
+          <td>
+            Soumission initiale : 3 auteurs · titre · résumé avec math en ligne ·
+            4 sections · liste numérotée (3 items) · tableau à 4 lignes · bibliographie
+          </td>
         </tr>
         <tr>
           <td><code>demo/demo_new.tex</code></td>
-          <td>4 auteurs (un ajouté) · titre reformulé ·
-              chiffres du résumé mis à jour · 4e item ajouté dans la liste ·
-              ligne supplémentaire dans le tableau · nouvelle sous-section ·
-              section \texttt{discussion} entièrement nouvelle ·
-              bibliographie étendue</td>
+          <td>
+            Version révisée : 4e auteur ajouté · titre reformulé ·
+            chiffres du résumé mis à jour · 4e item dans la liste ·
+            ligne supplémentaire dans le tableau · nouvelle sous-section ·
+            section Discussion entièrement nouvelle · bibliographie étendue
+          </td>
         </tr>
       </tbody>
     </table>
 
     <p>
-      Les deux versions couvrent ensemble les scénarios de diff les plus courants :
+      Ensemble, les deux fichiers couvrent les scénarios de révision les plus courants :
       modifications de texte en ligne, changements de valeurs mathématiques,
-      ajouts structurels (nouvel auteur, item de liste, ligne de tableau, section)
-      et une section entièrement nouvelle — constituant un test complet
-      pour tout flux de travail de diff LaTeX.
+      ajouts structurels (nouvel auteur, item, ligne de tableau, section entière) —
+      constituant un test complet pour tout flux de travail de diff LaTeX.
     </p>
 
     <div class="snapshot-wrap">
       <img src="demo/snapshot.png"
-           alt="Comparaison en trois panneaux : manuscrit original, manuscrit révisé et sortie avec suivi des modifications (ajouts en bleu, suppressions en orange barré)">
+           alt="Comparaison en quatre panneaux montrant le manuscrit original, le manuscrit révisé, la sortie avec suivi des modifications (ajouts en bleu, suppressions en orange barré ondulé) et la copie propre pour la resoumission">
     </div>
 
     <a class="cta" href="https://github.com/eartigau/latex-updates">

@@ -59,7 +59,7 @@ JOURNALS: dict[str, dict] = {
         ),
         'extra_args': [
             '--append-context2cmd=abstract',
-            '--exclude-textcmd=subtitle',
+            '--exclude-textcmd=subtitle,section,subsection,subsubsection,paragraph,subparagraph',
         ],
     },
     'aastex': {
@@ -179,6 +179,10 @@ def clean_file(text: str, strip_bare_groups: bool = False) -> str:
     text = strip_bf_markup(text)
     if strip_bare_groups:
         text = strip_line_start_bare_groups(text)
+    # \. followed by whitespace means "period with normal inter-word spacing".
+    # Inside \DIFdel{\.} the accent command consumes the closing brace.
+    # Replace with a plain period before diffing to avoid the breakage.
+    text = re.sub(r'\\\.\s', '. ', text)
     return text
 
 
@@ -202,19 +206,14 @@ TOGGLE_PREAMBLE = r"""
 %% basic set.  Define orange here so \color{orange} works regardless.
 \definecolor{orange}{rgb}{1.0,0.55,0.0}
 
-%% Wavy strikethrough for deleted text.
-%% \ULdepth=-.65\ht\strutbox centres the wave at roughly mid-glyph height.
-\DeclareRobustCommand*\DIFwavestrike{\bgroup \ULdepth=-.65\ht\strutbox
-  \markoverwith{\hbox{\sixly\char58}}\ULon}
-
 %% Colour overrides for latexdiff markup.
-\long\def\DIFadd#1{{\color{blue}#1}}
-\long\def\DIFaddtex#1{{\color{blue}#1}}
-\long\def\DIFaddFL#1{\DIFadd{#1}}
+\DeclareRobustCommand{\DIFadd}[1]{{\color{blue}#1}}
+\DeclareRobustCommand{\DIFaddtex}[1]{{\color{blue}#1}}
+\DeclareRobustCommand{\DIFaddFL}[1]{\DIFadd{#1}}
 
-\long\def\DIFdel#1{\ifshowdel{\color{orange}\DIFwavestrike{#1}}\fi}
-\long\def\DIFdeltex#1{\ifshowdel{\color{orange}\DIFwavestrike{#1}}\fi}
-\long\def\DIFdelFL#1{\DIFdel{#1}}
+\DeclareRobustCommand{\DIFdel}[1]{\ifshowdel{{\color{orange}\setlength{\ULdepth}{-0.6ex}\uwave{#1}}}\fi}
+\DeclareRobustCommand{\DIFdeltex}[1]{\ifshowdel{{\color{orange}\setlength{\ULdepth}{-0.6ex}\uwave{#1}}}\fi}
+\DeclareRobustCommand{\DIFdelFL}[1]{\DIFdel{#1}}
 
 %% Make the float-environment begin/end markers truly empty so that
 %% \hline after \DIFaddendFL works correctly inside tabular environments.
@@ -226,14 +225,38 @@ TOGGLE_PREAMBLE = r"""
 """
 
 
+SECTION_COMMANDS = [
+    r'section\*?',
+    r'subsection\*?',
+    r'subsubsection\*?',
+    r'paragraph\*?',
+    r'subparagraph\*?',
+]
+
+
+def normalize_section_diff_boundaries(text: str) -> str:
+    """Ensure diff markers do not sit immediately before sectioning commands."""
+    pattern = re.compile(
+        r'(\\DIF(?:add|del)(?:begin|end))\s+(\\(?:' +
+        '|'.join(SECTION_COMMANDS) + r')\b)',
+        flags=re.MULTILINE,
+    )
+    return pattern.sub(r'\1\n\2', text)
+
+
 def postprocess_diff(text: str) -> str:
     """Inject the colour/toggle preamble into latexdiff output."""
+    text = normalize_section_diff_boundaries(text)
+    # A diff block containing only \\ is invalid LaTeX ("no line here").
+    # Drop the \\ so the surrounding markers stay balanced but harmless.
+    text = re.sub(r'(\\DIF(?:add|del)begin)\s*\\\\\n', r'\1\n', text)
     return text.replace('\\begin{document}',
                         TOGGLE_PREAMBLE + '\\begin{document}', 1)
 
 
 # ---------------------------------------------------------------------------
 # External tool wrappers
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 
 def _check_tool(name: str, install_hint: str) -> None:
@@ -253,6 +276,9 @@ def run_latexdiff(
     cmd = [
         'latexdiff',
         '--encoding=utf8',
+        '--type=TRADITIONAL',
+        '--subtype=SAFE',
+        '--floattype=FLOATSAFE',
         '--math-markup=0',
         *(extra_args or []),
         str(old_path),
@@ -273,17 +299,142 @@ def run_latexdiff(
     return result.stdout
 
 
-def compile_pdf(tex_path: Path) -> bool:
+def _parse_latex_errors(log_text: str) -> list[str]:
+    """Extract ! error lines and the context lines that follow them from a pdflatex log."""
+    lines = log_text.splitlines()
+    errors = []
+    i = 0
+    while i < len(lines):
+        if lines[i].startswith('!'):
+            block = [lines[i]]
+            for j in range(i + 1, min(i + 4, len(lines))):
+                if lines[j].strip():
+                    block.append(lines[j])
+            errors.append('\n'.join(block))
+        i += 1
+    return errors
+
+
+def _missing_file_from_log(log_text: str) -> str | None:
+    """Return the filename that LaTeX reported as missing, or None."""
+    m = re.search(r"! LaTeX Error: File `([^']+)' not found", log_text)
+    if m:
+        return m.group(1)
+    m = re.search(r"! I can't find file `([^']+)'", log_text)
+    if m:
+        return m.group(1)
+    return None
+
+
+def _find_file(filename: str, search_dirs: list[Path]) -> Path | None:
+    """Return the first directory in search_dirs that contains filename, as a Path."""
+    for d in search_dirs:
+        candidate = d / filename
+        if candidate.exists():
+            return candidate
+    return None
+
+
+def _resolve_texinputs(tex_source: str, hint_dirs: list[Path]) -> list[Path]:
+    """Find directories containing .cls/.sty files required by tex_source.
+
+    Parses \\documentclass to find the class name, checks kpsewhich, and if
+    the class is not in the TeX path searches hint_dirs, their parents, and
+    the user's home directory tree.  Returns extra directories for TEXINPUTS.
+    """
+    extra: list[Path] = []
+    m = re.search(r'\\documentclass(?:\[[^\]]*\])?\{(\w+)\}', tex_source)
+    if not m:
+        return extra
+    class_name = m.group(1)
+    cls_file = f'{class_name}.cls'
+
+    # Check if already on the TeX path.
+    if shutil.which('kpsewhich'):
+        r = subprocess.run(['kpsewhich', cls_file], capture_output=True, text=True)
+        if r.returncode == 0 and r.stdout.strip():
+            return extra  # found — no override needed
+
+    # Not in TeX path: search hint directories and their parents.
+    search_dirs: list[Path] = []
+    for d in hint_dirs:
+        for candidate in (d, d.parent, d.parent.parent):
+            if candidate not in search_dirs:
+                search_dirs.append(candidate)
+
+    found = _find_file(cls_file, search_dirs)
+
+    # Broader search: mdfind (macOS Spotlight) then find ~
+    if not found:
+        for finder_cmd in (
+            ['mdfind', '-name', cls_file],
+            ['find', str(Path.home()), '-name', cls_file, '-maxdepth', '6'],
+        ):
+            if not shutil.which(finder_cmd[0]):
+                continue
+            r = subprocess.run(finder_cmd, capture_output=True, text=True, timeout=10)
+            paths = [Path(p) for p in r.stdout.splitlines() if p.strip()]
+            if paths:
+                found = paths[0]
+                break
+
+    if found:
+        print(f'  Found {cls_file} at {found.parent} — adding to TEXINPUTS')
+        extra.append(found.parent)
+    return extra
+
+
+def compile_pdf(tex_path: Path, extra_texinputs: list[Path] | None = None) -> bool:
     """Compile tex_path with pdflatex (two passes).  Returns True on success."""
     if not shutil.which('pdflatex'):
         return False
-    kwargs = dict(capture_output=True, cwd=tex_path.parent)
+
+    import os
+    env = dict(os.environ)
+    if extra_texinputs:
+        extra = ':'.join(str(p) for p in extra_texinputs)
+        # Put '.' (cwd) first so pdflatex finds the diff .tex file before
+        # any extra dir that might contain a same-named file.
+        env['TEXINPUTS'] = f'.:{extra}:'
+
+    kwargs = dict(capture_output=True, text=True, encoding='utf-8',
+                  cwd=tex_path.parent, env=env)
+    result = None
     for _ in range(2):
         result = subprocess.run(
-            ['pdflatex', '-interaction=nonstopmode', tex_path.name],
+            ['pdflatex', '-interaction=nonstopmode', '-halt-on-error', '-file-line-error', tex_path.name],
             **kwargs,
         )
-    return result.returncode == 0
+        if result.returncode != 0:
+            break
+
+    if result is not None and result.returncode != 0:
+        log_path = tex_path.with_suffix('.log')
+        log_text = ''
+        if log_path.exists():
+            log_text = log_path.read_text(encoding='utf-8', errors='replace')
+
+        errors = _parse_latex_errors(log_text) if log_text else []
+        missing = _missing_file_from_log(log_text) if log_text else None
+
+        print('  [pdflatex] compilation failed:', file=sys.stderr)
+        if errors:
+            for err in errors:
+                for line in err.splitlines():
+                    print(f'    {line}', file=sys.stderr)
+        elif log_text:
+            for line in log_text.splitlines()[-15:]:
+                print(f'    {line}', file=sys.stderr)
+        else:
+            for line in (result.stdout + result.stderr).splitlines()[-15:]:
+                print(f'    {line}', file=sys.stderr)
+
+        if missing:
+            print(f'\n  Missing file: {missing}', file=sys.stderr)
+            print(f'  Fix: copy {missing} to {tex_path.parent}/', file=sys.stderr)
+            print(f'       or install it: tlmgr install $(tlmgr search --file {missing} | head -1)', file=sys.stderr)
+
+    return result is not None and result.returncode == 0
 
 
 # ---------------------------------------------------------------------------
@@ -363,7 +514,8 @@ def generate(
     if do_compile:
         if shutil.which('pdflatex'):
             print('  Compiling PDF (2 passes)...')
-            ok = compile_pdf(out_path)
+            extra_texinputs = _resolve_texinputs(diff_text, [old_path.parent, new_path.parent, out_path.parent])
+            ok = compile_pdf(out_path, extra_texinputs=extra_texinputs or None)
             pdf = out_path.with_suffix('.pdf')
             if ok and pdf.exists():
                 print(f'  Diff PDF    → {pdf}')
