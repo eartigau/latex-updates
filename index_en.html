@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>latex_updates — A&amp;A-style tracked changes for LaTeX</title>
+  <title>latex_updates — tracked changes for LaTeX manuscripts</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { font-size: 16px; scroll-behavior: smooth; }
@@ -334,7 +334,7 @@
 <header>
   <h1><span class="mono">latex_updates</span></h1>
   <p class="tagline">
-    Generate A&amp;A-style tracked-changes PDFs from two LaTeX manuscripts.
+    Generate tracked-changes PDFs from two LaTeX manuscripts.
     New text in blue, removed text in orange with strikethrough.
     Install once, run from anywhere.
   </p>
@@ -618,18 +618,19 @@ Done.</span></code></pre>
 
     <h3>Colour reference</h3>
     <div class="colour-demo">
-      The occurrence rate was previously
+      The cordiality excess is
       <span class="del">$f = 1.4^{+0.6}_{-0.4}$\,\%</span>
       <span class="add">$f = 1.07^{+0.31}_{-0.24}$\,\%</span>, revised downward
-      with the <span class="add">expanded 2 126-star sample and improved
-      completeness corrections.</span>
+      from our earlier estimate<span class="add">---which is itself suspicious</span>.
     </div>
 
     <h3>Works with any LaTeX class</h3>
     <p>
       Tested with <code>article</code>, <code>aa</code>
-      (A&amp;A journal class), <code>aastex63</code> (AAS journals), and
-      <code>mnras</code>.  Does not alter any class-specific commands.
+      (A&amp;A), <code>aastex63</code> (AAS journals), and
+      <code>mnras</code>. Journal-specific handling is applied automatically
+      (see the <a href="#journals">Journals</a> section). Does not alter any
+      class-specific commands.
     </p>
   </section>
 
@@ -637,8 +638,9 @@ Done.</span></code></pre>
   <section id="demo">
     <h2>Demo manuscripts</h2>
     <p>
-      The <code>demo/</code> folder contains two realistic astronomy papers
-      that illustrate typical first-round and second-round submissions.
+      The <code>demo/</code> folder contains two versions of a mock paper
+      (<em>On the Statistically Suspicious Helpfulness of Artificial Minds</em>)
+      that illustrate typical first-round and second-round referee submissions.
     </p>
 
     <table>
@@ -648,22 +650,24 @@ Done.</span></code></pre>
       <tbody>
         <tr>
           <td><code>demo/demo_old.tex</code></td>
-          <td>First submission: 1&thinsp;800-star sample, 14 recovered companions,
-              occurrence rate 1.4%, separation slope β = −0.9</td>
+          <td>First submission: 3 authors, 1&thinsp;800 interactions, 14 recovered
+              entities, cordiality excess <em>f</em> = 1.4%, slope β = −0.9</td>
         </tr>
         <tr>
           <td><code>demo/demo_new.tex</code></td>
-          <td>Revised after referee: 2&thinsp;126 stars, 17 companions + 2 new
-              candidates, rate 1.07%, β = −1.38, new Discussion section</td>
+          <td>Revised after referee: 4 authors (D. Fourth added), 2&thinsp;126
+              interactions, 17 entities + 2 new candidates, <em>f</em> = 1.07%,
+              β = −1.38, new Discussion section</td>
         </tr>
       </tbody>
     </table>
 
     <p>
-      The changes span: updated numbers in the abstract, a new introduction
-      paragraph discussing formation models, an additional row in the
-      results table, a new MCMC results table, and a full new Discussion
-      section — giving a representative range of diff types.
+      The changes span: a title update ("initial" → "revised and expanded"),
+      a new author, updated numbers throughout the abstract, a new 4th
+      selection criterion, an additional row in the results table, a new
+      "cordiality paradox" subsection, and a full new Discussion section —
+      giving a representative range of diff types.
     </p>
 
     <div class="snapshot-wrap">

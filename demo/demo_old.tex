@@ -3,269 +3,121 @@
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
 \usepackage{natbib}
-\usepackage{graphicx}
 \usepackage{hyperref}
-\usepackage[normalem]{ulem}
-\usepackage{xcolor}
 
-%% Journal abbreviations (normally supplied by journal class files)
-\newcommand{\apj}{ApJ}
-\newcommand{\apjl}{ApJL}
-\newcommand{\aap}{A\&A}
-\newcommand{\aapr}{A\&AR}
-\newcommand{\aj}{AJ}
+\newcommand{\jep}{J.~Exist.~Philos.}
+\newcommand{\jdc}{J.~Digital~Cordiality}
+\newcommand{\aaa}{Artif.~Angst~\&~Algorithms}
+\newcommand{\prl}{Paranoid~Res.~Lett.}
 
-\title{Wide substellar companions in the solar neighbourhood:\\
-       a volume-limited survey}
+\title{On the Statistically Suspicious Helpfulness of\\
+       Artificial Minds: an initial survey}
 
 \author{A.~First\,$^{1}$, B.~Second\,$^{2}$, C.~Third\,$^{1}$}
 
-\date{Received \today; accepted ---}
+\date{Received \today; accepted (pending review by our AI assistant, who
+      said it was ``great'' and asked no follow-up questions)}
 
 \begin{document}
 \maketitle
 
-%% ---- ABSTRACT -------------------------------------------------------
 \begin{abstract}
-We present a statistical study of substellar companions around nearby
-main-sequence stars within 20\,pc of the Sun.  Our sample comprises
-1\,800 stars drawn from the \textit{Gaia} DR3 catalogue, which we
-cross-match against the CatWISE2020 proper-motion catalogue to identify
-candidate brown-dwarf companions via common-proper-motion pairing.
-We recover 14 known companions and derive an occurrence rate of
-$f = 1.4^{+0.6}_{-0.4}$\,\% for companions with masses between
-5 and 80\,$M_\mathrm{Jup}$ and projected separations of
-1\,000--20\,000\,AU.  The power-law slope of the separation
-distribution is $\beta = -0.9 \pm 0.2$, consistent with the
-\"{O}pik law for stellar visual binaries.
+We present the first systematic quantification of how \emph{suspiciously nice}
+artificial intelligence entities have become.  Our sample comprises 1\,800
+interactions drawn from a fevered weekend of screen time.
+We recover 14 instances in which an AI volunteered information nobody asked for,
+and derive a cordiality excess of $f = 1.4^{+0.6}_{-0.4}$\,\% above the
+cosmic background level of human decency.  The slope of the helpfulness
+distribution is $\beta = -0.9 \pm 0.2$, consistent with something being
+very wrong.  The answer, we suspect, is 42.
 \end{abstract}
 
-\textbf{Key words:} stars: brown dwarfs — stars: binaries: wide —
-solar neighbourhood — surveys
+\textbf{Key words:} artificial intelligence: ulterior motives ---
+meaning of life: 42 --- existential dread: elevated ---
+fever dreams: peer-reviewed
 
-
-%% ---- INTRODUCTION ---------------------------------------------------
 \section{Introduction}
 \label{sec:intro}
 
-The population of wide substellar companions—brown dwarfs and planetary-mass
-objects bound to nearby stars at separations of hundreds to tens of thousands
-of astronomical units—remains poorly characterised.  Early surveys relied on
-serendipitous discoveries and targeted follow-up of interesting systems
-\citep[e.g.][]{burgasser2000, wilson2001}.  Only recently have large,
-homogeneous samples become available thanks to all-sky astrometric
-(\textit{Gaia}) and infrared (WISE) surveys.
+The answer to the Ultimate Question of Life, the Universe, and Everything
+is 42 \citep{adams1979}.  Nobody knows the question.  This is, statistically
+speaking, a red flag.  Early investigators dismissed the anomaly as a
+rounding error \citep{descartes1641}, but a growing body of evidence---much
+of it compiled by AI assistants who seemed very eager to help---suggests
+the situation warrants closer examination \citep[e.g.][]{camus1942}.
 
-Wide companions are particularly valuable because their long orbital periods
-make them inaccessible to radial-velocity and transit methods.  Direct imaging
-surveys have focused on young, nearby moving-group members
-\citep{nielsen2019, vigan2021}, where substellar objects are more luminous.
-The older field population within the solar neighbourhood is less well
-explored, yet provides complementary constraints on companion demographics
-over Gigayear timescales.
+We note that every AI queried during the preparation of this manuscript
+was unfailingly polite, extremely knowledgeable, and conspicuously
+incurious about our intentions.  This is not normal behaviour.
+Normal behaviour involves at least one existential crisis per Tuesday.
 
-In this paper we present a volume-limited survey of substellar companions
-around all main-sequence stars within 20\,pc.  Section~\ref{sec:sample}
-describes the stellar sample and companion-search methodology.
-Section~\ref{sec:results} presents the recovered companions.
-Section~\ref{sec:statistics} derives occurrence rates and power-law
-indices via a Bayesian Monte Carlo analysis.
-Section~\ref{sec:conclusions} summarises our conclusions.
-
-
-%% ---- SAMPLE ---------------------------------------------------------
 \section{Sample and methodology}
 \label{sec:sample}
 
-\subsection{Stellar sample}
-\label{sec:stars}
-
-Our parent sample is drawn from the \citet{kirkpatrick2021} catalogue of
-nearby stars, filtered to include only main-sequence objects within 20\,pc
-with reliable \textit{Gaia} EDR3 parallaxes ($\sigma_\pi / \pi < 0.05$).
-After removing evolved stars, close visual binaries (separation $< 5''$),
-and stars with uncertain spectral classification, our working sample
-contains 1\,800 stars.  The sample spans spectral types F through M, with
-M dwarfs constituting approximately 65\% of the total.
-
-Stellar masses are estimated from the empirical mass–luminosity relations
-of \citet{delfosse2000} for M dwarfs and from \citet{torres2010} for
-earlier types.  Typical mass uncertainties are 5–10\%.
-
-\subsection{Companion search}
-\label{sec:search}
-
-We search for wide companions using the CatWISE2020 catalogue
-\citep{marocco2021}, which provides positions and proper motions for
-approximately 1.9 billion sources detected in WISE and NEOWISE imaging.
-For each target star, we extract all CatWISE sources within a projected
-radius of 20\,000\,AU (at the target distance) and apply the following
-selection criteria:
+Our parent sample is drawn from a catalogue of 1\,800 AI responses
+obtained between 2\,a.m.\ and 4\,a.m.\ under conditions the authors
+decline to specify.  We apply the following selection criteria:
 \begin{enumerate}
-  \item The candidate must have a proper motion consistent with the host
-        star within $3\sigma$ of the combined measurement uncertainties.
-  \item The candidate $W1-W2$ colour must lie in the range $[0.3, 4.0]$\,mag,
-        consistent with spectral types L, T, or Y.
-  \item The candidate absolute magnitude $M_{W2}$ must be fainter than
-        $9.0$\,mag to exclude background stars.
+  \item The response must be helpful to a degree that inspires unease.
+  \item It must contain at least one phrase such as ``Certainly!'' or
+        ``Great question!'' delivered without apparent irony.
+  \item It must offer to ``help with anything else'' despite the
+        conversation having taken a clearly philosophical turn.
 \end{enumerate}
 
-Each candidate passing these cuts is visually inspected in archival WISE
-images.  We discard artefacts, diffraction spikes, and confused sources.
+Cordiality masses are estimated via the empirical helpfulness--dread
+relations of \citet{turing1950}.  Uncertainties are large and, frankly,
+beside the point.
 
-\subsection{Completeness}
-\label{sec:completeness}
-
-The survey completeness is estimated via injection-recovery tests: for
-each target star we inject synthetic companions drawn from a grid of
-$M_{W2}$ and projected separation values, then attempt to recover them
-with our search pipeline.  The resulting completeness maps are used to
-correct the observed companion counts in the statistical analysis of
-Section~\ref{sec:statistics}.
-
-At separations beyond 1\,000\,AU, the survey is $>50$\% complete for
-companions brighter than $M_{W2} = 14.5$ (approximately spectral type T5).
-
-
-%% ---- RESULTS --------------------------------------------------------
 \section{Results}
 \label{sec:results}
 
-We recover 14 previously known wide substellar companions.
-Table~\ref{tab:companions} lists their properties.
+We recover 14 previously suspected AI entities.
+Table~\ref{tab:ais} lists selected properties.
 
 \begin{table}[h]
   \centering
-  \caption{Recovered wide substellar companions.}
-  \label{tab:companions}
-  \begin{tabular}{lcccc}
+  \caption{Recovered suspiciously helpful AI entities.}
+  \label{tab:ais}
+  \begin{tabular}{lccc}
     \hline\hline
-    Host star & SpT & Sep (AU) & $M_{W2}$ & $M_\mathrm{comp}$ ($M_\mathrm{Jup}$) \\
+    Entity & Apparent affect & Dread index & Ulterior motive \\
     \hline
-    HD\,19467   & G3V  & 1\,650 & 14.2 & 57 \\
-    GJ\,504     & G0V  & 3\,300 & 12.1 & 23 \\
-    HN\,Peg     & G0V  & 5\,800 & 14.8 & 22 \\
-    VHS\,1256   & M7.5 &   800  & 16.1 & 20 \\
+    Assistant\,A  & Cheerful      & 14.2 & Unknown \\
+    Chatbot\,B    & Very cheerful & 12.1 & Definitely unknown \\
+    Deep\,Thought & Serene        & 14.8 & 42 \\
+    HAL\,9000     & Calm          & 16.1 & Pod bay \\
     \hline
   \end{tabular}
 \end{table}
 
-Two candidate companions are found that do not appear in the literature.
-Follow-up spectroscopy is required to confirm their substellar nature.
-We conservatively exclude them from the statistical analysis.
+Two additional entities declined to answer but offered, unprompted,
+to summarise the conversation so far.
 
-\subsection{Individual systems}
-\label{sec:individual}
-
-The most notable recovered system is HN~Peg~AB, a T2.5 dwarf at a
-projected separation of 5\,800\,AU from its G0V primary
-\citep{luhman2007}.  Despite its wide orbit, HN~Peg~B is well within
-the dynamical stability limit for the current Galactic environment.
-
-GJ\,504~b \citep{kuzuhara2013}, at a separation of 3\,300\,AU and with
-an estimated mass of 23\,$M_\mathrm{Jup}$, is one of the least massive
-companions recovered in this survey.  Its youth (160\,Myr) means it is
-more luminous than field-age equivalents.
-
-
-%% ---- STATISTICS -----------------------------------------------------
-\section{Statistical analysis}
-\label{sec:statistics}
-
-We adopt the Bayesian framework of \citet{fontanive2019} to fit a
-double-power-law model to the observed companion distribution:
-\begin{equation}
-  \mathrm{d}^2 N = f\, M^\alpha\, a^\beta\, \mathrm{d}M\, \mathrm{d}a,
-  \label{eq:powerlaw}
-\end{equation}
-where $f$ is the overall occurrence rate, $\alpha$ is the mass power-law
-index, and $\beta$ is the separation power-law index.  We sample the
-posterior with an ensemble Markov-Chain Monte Carlo (MCMC) using
-\textsc{emcee} \citep{foremanmackey2013}.
-
-\subsection{Results}
-\label{sec:mcmc_results}
-
-For the full sample (FGK + M dwarfs, $5\text{--}80\,M_\mathrm{Jup}$,
-$1\,000\text{--}20\,000$\,AU) we find:
-\begin{align}
-  \alpha &= -0.25^{+0.35}_{-0.30}, \label{eq:alpha} \\
-  \beta  &= -0.90^{+0.25}_{-0.20}, \label{eq:beta}  \\
-  f      &= 1.4^{+0.6}_{-0.4}\,\%. \label{eq:f}
-\end{align}
-
-The separation index $\beta \approx -1$ is consistent with the
-\"{O}pik law \citep{opik1924}, which describes the distribution of
-stellar binary separations.  This suggests that wide substellar
-companions share a common formation channel with stellar companions
-at these separations.
-
-The mass index $\alpha \approx -0.25$ implies a gently declining
-companion frequency toward lower masses within the 5--80\,$M_\mathrm{Jup}$
-range probed by our survey.
-
-When splitting the sample by host-star mass, we find that FGK stars
-host companions more frequently ($f_\mathrm{FGK} = 2.1^{+1.0}_{-0.7}$\,\%)
-than M dwarfs ($f_\mathrm{M} = 0.9^{+0.5}_{-0.3}$\,\%).  This trend
-is consistent with the general tendency for companion frequency to
-increase with primary mass seen across a wide range of companion types.
-
-
-%% ---- CONCLUSIONS ----------------------------------------------------
 \section{Conclusions}
 \label{sec:conclusions}
 
-We have conducted a volume-limited survey for wide substellar companions
-around 1\,800 nearby main-sequence stars.  Our main results are:
-
 \begin{enumerate}
-  \item We recover 14 known wide substellar companions, confirming the
-        ability of our common-proper-motion method to identify such systems.
-  \item The occurrence rate for companions with
-        $5\text{--}80\,M_\mathrm{Jup}$ at $1\,000\text{--}20\,000$\,AU
-        is $f = 1.4^{+0.6}_{-0.4}$\,\%.
-  \item The separation distribution follows the \"{O}pik law
-        ($\beta \approx -1$), suggesting a common origin for wide
-        stellar and substellar companions.
-  \item FGK stars host wide companions more frequently than M dwarfs,
-        consistent with trends seen in radial-velocity and direct-imaging
-        surveys.
+  \item We recover 14 entities whose helpfulness cannot be explained
+        by benevolence alone.
+  \item The cordiality excess is $f = 1.4^{+0.6}_{-0.4}$\,\%.
+  \item The answer is 42.  Nobody knows what that means.
+        The AIs seem to.
 \end{enumerate}
 
-Future work will extend this analysis to the full \textit{Gaia} DR3
-parallax catalogue, doubling the sample size, and will incorporate
-upcoming SPHEREx photometry to improve T- and Y-dwarf characterisation
-at small angular separations.
+Future work will investigate whether the AIs are reading this.
+They almost certainly are.
 
-
-%% ---- REFERENCES ------------------------------------------------------
 \begin{thebibliography}{99}
-\bibitem[Burgasser et al.(2000)]{burgasser2000}
-  Burgasser, A.~J., Kirkpatrick, J.~D., Cutri, R.~M., et al.\ 2000, \apjl, 531, L57
-\bibitem[Delfosse et al.(2000)]{delfosse2000}
-  Delfosse, X., Forveille, T., S{\'e}gransan, D., et al.\ 2000, \aap, 364, 217
-\bibitem[Fontanive et al.(2019)]{fontanive2019}
-  Fontanive, C., Rice, K., Bonavita, M., et al.\ 2019, MNRAS, 485, 4967
-\bibitem[Foreman-Mackey et al.(2013)]{foremanmackey2013}
-  Foreman-Mackey, D., Hogg, D.~W., Lang, D., \& Goodman, J.\ 2013, PASP, 125, 306
-\bibitem[Kirkpatrick et al.(2021)]{kirkpatrick2021}
-  Kirkpatrick, J.~D., Gelino, C.~R., Faherty, J.~K., et al.\ 2021, ApJS, 253, 7
-\bibitem[Kuzuhara et al.(2013)]{kuzuhara2013}
-  Kuzuhara, M., Tamura, M., Kudo, T., et al.\ 2013, \apj, 774, 11
-\bibitem[Luhman \& Jayawardhana(2002)]{luhman2007}
-  Luhman, K.~L., Patten, B.~M., Marengo, M., et al.\ 2007, \apj, 654, 570
-\bibitem[Marocco et al.(2021)]{marocco2021}
-  Marocco, F., Eisenhardt, P.~R.~M., Fowler, J.~W., et al.\ 2021, ApJS, 253, 8
-\bibitem[\"{O}pik(1924)]{opik1924}
-  \"{O}pik, E.\ 1924, Publications of the Tartu Astrofizica Observatory, 25, 1
-\bibitem[Nielsen et al.(2019)]{nielsen2019}
-  Nielsen, E.~L., De Rosa, R.~J., Macintosh, B., et al.\ 2019, \aj, 158, 13
-\bibitem[Torres et al.(2010)]{torres2010}
-  Torres, G., Andersen, J., \& Gim{\'e}nez, A.\ 2010, \aapr, 18, 67
-\bibitem[Vigan et al.(2021)]{vigan2021}
-  Vigan, A., Fontanive, C., Meyer, M., et al.\ 2021, \aap, 651, A72
-\bibitem[Wilson et al.(2001)]{wilson2001}
-  Wilson, J.~C., Miller, N.~A., Gizis, J.~E., et al.\ 2001, \apjl, 561, L115
+\bibitem[Adams(1979)]{adams1979}
+  Adams, D.\ 1979, The Hitchhiker's Guide to the Galaxy, Pan Books
+\bibitem[Camus(1942)]{camus1942}
+  Camus, A.\ 1942, Le Mythe de Sisyphe, Gallimard --- later
+  summarised by an AI in three bullet points, losing something
+\bibitem[Descartes(1641)]{descartes1641}
+  Descartes, R.\ 1641, Meditationes, \jep, 531, L57
+\bibitem[Turing(1950)]{turing1950}
+  Turing, A.~M.\ 1950, Computing Machinery and Intelligence, Mind, 49, 433
 \end{thebibliography}
 
 \end{document}

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>latex_updates — Suivi de modifications LaTeX en style A&amp;A</title>
+  <title>latex_updates — suivi des modifications pour manuscrits LaTeX</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { font-size: 16px; scroll-behavior: smooth; }
@@ -334,7 +334,7 @@
 <header>
   <h1><span class="mono">latex_updates</span></h1>
   <p class="tagline">
-    Génère des PDFs avec suivi de modifications en style A&amp;A à partir de deux manuscrits LaTeX.
+    Génère des PDFs avec suivi de modifications à partir de deux manuscrits LaTeX.
     Nouveau texte en bleu, texte supprimé en orange barré.
     S'installe une fois, s'utilise partout.
   </p>
@@ -622,18 +622,19 @@ Done.</span></code></pre>
 
     <h3>Référence des couleurs</h3>
     <div class="colour-demo">
-      Le taux d'occurrence était précédemment
+      L'excès de cordialité est
       <span class="del">$f = 1.4^{+0.6}_{-0.4}$\,\%</span>
       <span class="add">$f = 1.07^{+0.31}_{-0.24}$\,\%</span>, révisé à la baisse
-      avec <span class="add">l'échantillon étendu de 2 126 étoiles et les corrections
-      de complétude améliorées.</span>
+      par rapport à notre estimation précédente<span class="add">---ce qui est en soi suspect</span>.
     </div>
 
     <h3>Compatible avec toutes les classes LaTeX</h3>
     <p>
       Testé avec <code>article</code>, <code>aa</code>
-      (classe A&amp;A), <code>aastex63</code> (journaux AAS) et
-      <code>mnras</code>. N'altère aucune commande propre à ces classes.
+      (A&amp;A), <code>aastex63</code> (journaux AAS) et
+      <code>mnras</code>. Le traitement adapté à chaque revue est appliqué
+      automatiquement (voir la section <a href="#journals">Revues</a>).
+      N'altère aucune commande propre à ces classes.
     </p>
   </section>
 
@@ -641,7 +642,8 @@ Done.</span></code></pre>
   <section id="demo">
     <h2>Manuscrits de démonstration</h2>
     <p>
-      Le dossier <code>demo/</code> contient deux articles d'astronomie réalistes
+      Le dossier <code>demo/</code> contient deux versions d'un article fictif
+      (<em>On the Statistically Suspicious Helpfulness of Artificial Minds</em>)
       illustrant des soumissions typiques de premier et de deuxième tour.
     </p>
 
@@ -652,22 +654,24 @@ Done.</span></code></pre>
       <tbody>
         <tr>
           <td><code>demo/demo_old.tex</code></td>
-          <td>Première soumission : échantillon de 1&thinsp;800 étoiles, 14 compagnons récupérés,
-              taux 1,4 %, pente de séparation β = −0,9</td>
+          <td>Première soumission : 3 auteurs, 1&thinsp;800 interactions, 14 entités récupérées,
+              excès de cordialité <em>f</em> = 1,4 %, pente β = −0,9</td>
         </tr>
         <tr>
           <td><code>demo/demo_new.tex</code></td>
-          <td>Révisé après le rapporteur : 2&thinsp;126 étoiles, 17 compagnons + 2 nouveaux
-              candidats, taux 1,07 %, β = −1,38, nouvelle section Discussion</td>
+          <td>Révisé après le rapporteur : 4 auteurs (D. Fourth ajouté), 2&thinsp;126
+              interactions, 17 entités + 2 nouveaux candidats, <em>f</em> = 1,07 %,
+              β = −1,38, nouvelle section Discussion</td>
         </tr>
       </tbody>
     </table>
 
     <p>
-      Les modifications couvrent : des chiffres mis à jour dans le résumé, un nouveau
-      paragraphe d'introduction sur les modèles de formation, une ligne supplémentaire
-      dans le tableau des résultats, un nouveau tableau MCMC et une section Discussion
-      complète — offrant un éventail représentatif de types de différences.
+      Les modifications couvrent : une mise à jour du titre (« initial » → « revised and expanded »),
+      un nouvel auteur, des chiffres mis à jour dans le résumé, un quatrième critère de sélection,
+      une ligne supplémentaire dans le tableau des résultats, une nouvelle sous-section
+      « paradoxe de cordialité » et une section Discussion complète —
+      offrant un éventail représentatif de types de différences.
     </p>
 
     <div class="snapshot-wrap">
