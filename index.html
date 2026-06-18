@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>latex_updates — A&amp;A-style tracked changes for LaTeX</title>
+  <style>
+    /* ── Reset & base ──────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                   "Helvetica Neue", Arial, sans-serif;
+      color: #1a1a2e;
+      background: #f8f9fc;
+      line-height: 1.7;
+    }
+
+    /* ── Header ──────────────────────────────────────────────────────── */
+    header {
+      background: linear-gradient(135deg, #0f3460 0%, #16213e 60%, #0d1b2a 100%);
+      color: #fff;
+      padding: 4rem 2rem 3rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: "";
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 70% 30%, rgba(22,160,133,0.15) 0%, transparent 60%);
+    }
+    header h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      position: relative;
+    }
+    header h1 span.mono {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      color: #4ecdc4;
+    }
+    header p.tagline {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      opacity: 0.85;
+      max-width: 640px;
+      margin-inline: auto;
+      position: relative;
+    }
+    .badge-row {
+      margin-top: 1.5rem;
+      display: flex;
+      gap: 0.6rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #e0e0e0;
+      font-size: 0.82rem;
+      font-family: monospace;
+      padding: 0.3rem 0.7rem;
+      border-radius: 20px;
+    }
+    .demo-colours {
+      margin-top: 2rem;
+      display: inline-flex;
+      gap: 1.5rem;
+      background: rgba(0,0,0,0.3);
+      border-radius: 12px;
+      padding: 0.75rem 1.5rem;
+      position: relative;
+    }
+    .demo-colours span { font-size: 1.05rem; font-weight: 500; }
+    .added   { color: #60a5fa; }  /* blue */
+    .removed { color: #fb923c; text-decoration: line-through; }  /* orange */
+
+    /* ── Navigation ──────────────────────────────────────────────────── */
+    nav {
+      background: #fff;
+      border-bottom: 1px solid #e2e8f0;
+      position: sticky; top: 0; z-index: 100;
+    }
+    nav ul {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      gap: 0.25rem;
+      list-style: none;
+      overflow-x: auto;
+    }
+    nav a {
+      display: inline-block;
+      padding: 0.85rem 0.9rem;
+      color: #4a5568;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: #0f3460; }
+
+    /* ── Main content ────────────────────────────────────────────────── */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    /* ── Sections ────────────────────────────────────────────────────── */
+    section { margin-bottom: 3.5rem; }
+    h2 {
+      font-size: 1.65rem;
+      font-weight: 700;
+      color: #0f3460;
+      margin-bottom: 1rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    h3 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin: 1.5rem 0 0.6rem;
+    }
+    p { margin-bottom: 0.85rem; }
+
+    /* ── Cards / steps ───────────────────────────────────────────────── */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.2rem;
+      margin-top: 1rem;
+    }
+    .card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 1.2rem 1.3rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .card .num {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #4ecdc4;
+      line-height: 1;
+    }
+    .card h3 { margin-top: 0.5rem; font-size: 1rem; }
+    .card p  { font-size: 0.88rem; color: #718096; margin: 0; }
+
+    /* ── Code blocks ─────────────────────────────────────────────────── */
+    pre {
+      background: #1a1a2e;
+      color: #e2e8f0;
+      border-radius: 8px;
+      padding: 1.2rem 1.4rem;
+      overflow-x: auto;
+      font-size: 0.875rem;
+      line-height: 1.6;
+      margin: 0.75rem 0 1rem;
+      position: relative;
+    }
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    }
+    pre code { color: inherit; background: none; padding: 0; font-size: inherit; }
+    :not(pre) > code {
+      background: #edf2f7;
+      color: #c7254e;
+      padding: 0.15em 0.4em;
+      border-radius: 4px;
+      font-size: 0.875em;
+    }
+    /* Syntax-hint colours */
+    .kw  { color: #c084fc; }
+    .cm  { color: #64748b; font-style: italic; }
+    .st  { color: #86efac; }
+    .nb  { color: #60a5fa; }
+    .op  { color: #f472b6; }
+
+    /* ── Terminal block ───────────────────────────────────────────────── */
+    .terminal {
+      background: #0d1b2a;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 0.75rem 0 1rem;
+    }
+    .terminal-bar {
+      background: #1e293b;
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .terminal-bar span {
+      width: 12px; height: 12px; border-radius: 50%;
+    }
+    .dot-red    { background: #ef4444; }
+    .dot-yellow { background: #f59e0b; }
+    .dot-green  { background: #22c55e; }
+    .terminal pre {
+      margin: 0;
+      border-radius: 0;
+      background: transparent;
+      padding: 1rem 1.4rem;
+    }
+    .prompt { color: #4ecdc4; }
+    .out    { color: #94a3b8; }
+
+    /* ── Tables ──────────────────────────────────────────────────────── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 0.75rem 0 1rem;
+      font-size: 0.9rem;
+    }
+    th {
+      background: #0f3460;
+      color: #fff;
+      text-align: left;
+      padding: 0.55rem 0.9rem;
+      font-weight: 600;
+    }
+    td { padding: 0.55rem 0.9rem; border-bottom: 1px solid #e2e8f0; }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: #f7fafc; }
+
+    /* ── Colour demo box ─────────────────────────────────────────────── */
+    .colour-demo {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid #4ecdc4;
+      border-radius: 8px;
+      padding: 1.2rem 1.4rem;
+      font-family: "Times New Roman", Georgia, serif;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: #1a202c;
+      margin: 0.75rem 0;
+    }
+    .colour-demo .add  { color: #2563eb; }
+    .colour-demo .del  { color: #ea580c; text-decoration: line-through; }
+
+    /* ── Toggle snippet ──────────────────────────────────────────────── */
+    .toggle-box {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 1.2rem 1.4rem;
+      margin: 0.75rem 0;
+    }
+    .toggle-box p { margin: 0 0 0.6rem; font-size: 0.92rem; color: #4a5568; }
+
+    /* ── CTA button ──────────────────────────────────────────────────── */
+    .cta {
+      display: inline-block;
+      background: #0f3460;
+      color: #fff;
+      padding: 0.75rem 1.8rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      margin-top: 1rem;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .cta:hover { background: #1a4a8a; transform: translateY(-1px); }
+
+    /* ── Footer ──────────────────────────────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.85rem;
+      color: #718096;
+      background: #fff;
+      border-top: 1px solid #e2e8f0;
+    }
+    footer a { color: #0f3460; }
+  </style>
+</head>
+<body>
+
+<!-- ══ HEADER ══════════════════════════════════════════════════════════ -->
+<header>
+  <h1><span class="mono">latex_updates</span></h1>
+  <p class="tagline">
+    Generate A&amp;A-style tracked-changes PDFs from two LaTeX manuscripts.
+    New text in blue, removed text in orange with strikethrough.
+    One script, no dependencies beyond a TeX installation.
+  </p>
+  <div class="badge-row">
+    <span class="badge">Python ≥ 3.10</span>
+    <span class="badge">latexdiff</span>
+    <span class="badge">MIT License</span>
+    <span class="badge">No pip install required</span>
+  </div>
+  <div class="demo-colours">
+    <span class="added">new text appears like this</span>
+    <span class="removed">old text appears like this</span>
+  </div>
+</header>
+
+<!-- ══ NAVIGATION ═══════════════════════════════════════════════════════ -->
+<nav>
+  <ul>
+    <li><a href="#install">Installation</a></li>
+    <li><a href="#quickstart">Quick start</a></li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#toggle">Toggle</a></li>
+    <li><a href="#how">How it works</a></li>
+    <li><a href="#demo">Demo</a></li>
+    <li><a href="https://github.com/eartigau/latex_updates">GitHub</a></li>
+  </ul>
+</nav>
+
+<!-- ══ MAIN CONTENT ══════════════════════════════════════════════════════ -->
+<main>
+
+  <!-- ── Install ──────────────────────────────────────────────────── -->
+  <section id="install">
+    <h2>Installation</h2>
+    <p>
+      <code>latex_updates.py</code> is a single Python file.
+      No Python packages beyond the standard library are needed.
+      The only external requirement is <strong>latexdiff</strong>,
+      which is part of every major TeX distribution.
+    </p>
+
+    <h3>1 — Get the script</h3>
+    <div class="terminal">
+      <div class="terminal-bar">
+        <span class="dot-red"></span>
+        <span class="dot-yellow"></span>
+        <span class="dot-green"></span>
+      </div>
+      <pre><code><span class="prompt">$</span> git clone https://github.com/eartigau/latex_updates.git
+<span class="prompt">$</span> cd latex_updates</code></pre>
+    </div>
+
+    <h3>2 — Install latexdiff</h3>
+    <div class="terminal">
+      <div class="terminal-bar">
+        <span class="dot-red"></span>
+        <span class="dot-yellow"></span>
+        <span class="dot-green"></span>
+      </div>
+      <pre><code><span class="cm"># macOS (Homebrew)</span>
+<span class="prompt">$</span> brew install latexdiff
+
+<span class="cm"># Debian / Ubuntu</span>
+<span class="prompt">$</span> sudo apt install latexdiff
+
+<span class="cm"># TeX Live (any platform)</span>
+<span class="prompt">$</span> tlmgr install latexdiff</code></pre>
+    </div>
+
+    <p>
+      <code>pdflatex</code> is needed only for the automatic PDF compilation step;
+      if it is not installed, <code>latex_updates</code> will still produce the
+      <code>.tex</code> file and tell you how to compile it manually.
+    </p>
+  </section>
+
+  <!-- ── Quick start ──────────────────────────────────────────────── -->
+  <section id="quickstart">
+    <h2>Quick start</h2>
+    <p>Try the included demo manuscripts:</p>
+
+    <div class="terminal">
+      <div class="terminal-bar">
+        <span class="dot-red"></span>
+        <span class="dot-yellow"></span>
+        <span class="dot-green"></span>
+      </div>
+      <pre><code><span class="prompt">$</span> python latex_updates.py demo/demo_old.tex demo/demo_new.tex
+
+<span class="out">latex_updates: generating diff between
+  old: demo/demo_old.tex
+  new: demo/demo_new.tex
+
+  Cleaning demo_old.tex (strip {\bf} markup)...
+  Cleaning demo_new.tex (strip bare groups)...
+  Running latexdiff...
+  Inserting colour definitions and toggle...
+
+  Diff source → demo/diff_demo_new.tex
+  Compiling PDF (2 passes)...
+  Diff PDF    → demo/diff_demo_new.pdf
+
+Done.</span></code></pre>
+    </div>
+
+    <p>
+      Open <code>demo/diff_demo_new.pdf</code> to see the result.
+    </p>
+  </section>
+
+  <!-- ── Usage ────────────────────────────────────────────────────── -->
+  <section id="usage">
+    <h2>Usage</h2>
+    <pre><code>python latex_updates.py OLD.tex NEW.tex [options]</code></pre>
+
+    <table>
+      <thead>
+        <tr><th>Argument / option</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>OLD.tex</code></td>
+            <td>Previous version of the manuscript</td></tr>
+        <tr><td><code>NEW.tex</code></td>
+            <td>New (revised) version of the manuscript</td></tr>
+        <tr><td><code>-o FILE</code> / <code>--output FILE</code></td>
+            <td>Override the output filename.<br>Default: <code>diff_&lt;NEW&gt;.tex</code> in the same directory</td></tr>
+        <tr><td><code>--no-compile</code></td>
+            <td>Skip pdflatex; produce <code>.tex</code> only</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Examples</h3>
+    <pre><code><span class="cm"># Basic — produces diff_v2_paper.tex and diff_v2_paper.pdf</span>
+<span class="prompt">$</span> python latex_updates.py v1_paper.tex v2_paper.tex
+
+<span class="cm"># Custom output name (handy for sending to a referee)</span>
+<span class="prompt">$</span> python latex_updates.py old.tex new.tex -o for_referee.tex
+
+<span class="cm"># Generate .tex only, compile later</span>
+<span class="prompt">$</span> python latex_updates.py old.tex new.tex --no-compile
+<span class="prompt">$</span> pdflatex diff_new.tex</code></pre>
+  </section>
+
+  <!-- ── Toggle ───────────────────────────────────────────────────── -->
+  <section id="toggle">
+    <h2>Showing or hiding deleted text</h2>
+    <p>
+      Every generated <code>.tex</code> file contains a toggle near the top
+      that lets you switch between two modes without re-running the script:
+    </p>
+
+    <div class="toggle-box">
+      <p><strong>Show deleted text</strong> (default — for the referee response)</p>
+      <pre><code>\newif\ifshowdel
+<span class="kw">\showdeltrue</span>   <span class="cm">% ← deleted text in orange</span></code></pre>
+    </div>
+
+    <div class="toggle-box">
+      <p><strong>Hide deleted text</strong> (clean copy for resubmission)</p>
+      <pre><code>\newif\ifshowdel
+<span class="kw">\showdelfalse</span>  <span class="cm">% ← deleted text invisible</span></code></pre>
+    </div>
+
+    <p>
+      Change the line in the <code>.tex</code> file and recompile — no other
+      edits needed.
+    </p>
+  </section>
+
+  <!-- ── How it works ─────────────────────────────────────────────── -->
+  <section id="how">
+    <h2>How it works</h2>
+
+    <div class="cards">
+      <div class="card">
+        <div class="num">1</div>
+        <h3>Clean the old file</h3>
+        <p>Strip <code>{\bf …}</code> and <code>\textbf{…}</code> markup
+           added during earlier revision rounds.</p>
+      </div>
+      <div class="card">
+        <div class="num">2</div>
+        <h3>Clean the new file</h3>
+        <p>Remove leftover bare <code>{ }</code> groups from the
+           <code>{\bf}</code> → <code>{ }</code> conversion process.</p>
+      </div>
+      <div class="card">
+        <div class="num">3</div>
+        <h3>Run latexdiff</h3>
+        <p>Word-level diff with math-mode protection.
+           The latexdiff preamble is kept intact for safety.</p>
+      </div>
+      <div class="card">
+        <div class="num">4</div>
+        <h3>Inject colour</h3>
+        <p>Blue for additions, orange with strikethrough for deletions.
+           The toggle is injected before <code>\begin{document}</code>.</p>
+      </div>
+      <div class="card">
+        <div class="num">5</div>
+        <h3>Compile PDF</h3>
+        <p>Two <code>pdflatex</code> passes resolve cross-references and
+           produce the final PDF.</p>
+      </div>
+    </div>
+
+    <h3>Colour reference</h3>
+    <div class="colour-demo">
+      The occurrence rate was previously
+      <span class="del">$f = 1.4^{+0.6}_{-0.4}$\,\%</span>
+      <span class="add">$f = 1.07^{+0.31}_{-0.24}$\,\%</span>, revised downward
+      with the <span class="add">expanded 2\,126-star sample and improved
+      completeness corrections.</span>
+    </div>
+
+    <h3>Works with any LaTeX class</h3>
+    <p>
+      The script has been tested with <code>article</code>, <code>aa</code>
+      (A&amp;A journal class), <code>aastex63</code> (AAS journals), and
+      <code>mnras</code>.  It does not alter any class-specific commands.
+    </p>
+  </section>
+
+  <!-- ── Demo ─────────────────────────────────────────────────────── -->
+  <section id="demo">
+    <h2>Demo manuscripts</h2>
+    <p>
+      The <code>demo/</code> folder contains two realistic astronomy papers
+      that illustrate typical first-round and second-round submissions.
+    </p>
+
+    <table>
+      <thead>
+        <tr><th>File</th><th>Content</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>demo/demo_old.tex</code></td>
+          <td>First submission: 1&thinsp;800-star sample, 14 recovered companions,
+              occurrence rate 1.4%, separation slope β = −0.9</td>
+        </tr>
+        <tr>
+          <td><code>demo/demo_new.tex</code></td>
+          <td>Revised after referee: 2&thinsp;126 stars, 17 companions + 2 new
+              candidates, rate 1.07%, β = −1.38, new Discussion section</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>
+      The changes span: updated numbers in the abstract, a new introduction
+      paragraph discussing formation models, an additional row in the
+      results table, a new MCMC results table, and a full new Discussion
+      section — giving a representative range of diff types.
+    </p>
+
+    <a class="cta" href="https://github.com/eartigau/latex_updates">
+      View on GitHub →
+    </a>
+  </section>
+
+</main>
+
+<!-- ══ FOOTER ══════════════════════════════════════════════════════════ -->
+<footer>
+  <p>
+    <a href="https://github.com/eartigau/latex_updates">latex_updates</a>
+    &nbsp;·&nbsp; MIT License
+    &nbsp;·&nbsp; Built for the astronomy community
+  </p>
+</footer>
+
+</body>
+</html>

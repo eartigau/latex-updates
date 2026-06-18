@@ -1,0 +1,36 @@
+# LaTeX build artefacts
+*.aux
+*.log
+*.out
+*.bbl
+*.blg
+*.toc
+*.lof
+*.lot
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+*.nav
+*.snm
+*.vrb
+
+# Compiled PDFs (keep demo PDFs out of the repo)
+demo/*.pdf
+demo/*.aux
+demo/*.log
+demo/*.out
+
+# Diff output (users generate these locally)
+diff_*.tex
+diff_*.pdf
+
+# Temporary files created by latex_updates.py
+._lu_*.tex
+
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
