@@ -15,15 +15,16 @@
       line-height: 1.7;
     }
 
-    /* ── Barre supérieure : accueil + langue ── */
+    /* ── Barre supérieure : accueil + langue (sticky, toujours visible) ── */
     .topbar {
-      background: rgba(0,0,0,0.35);
+      background: #0d1b2a;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0.45rem 1.5rem;
-      position: relative;
-      z-index: 2;
+      position: sticky;
+      top: 0;
+      z-index: 101;
     }
     .topbar a {
       color: rgba(255,255,255,0.75);
@@ -117,11 +118,11 @@
     .added   { color: #60a5fa; }
     .removed { color: #fb923c; text-decoration: line-through; }
 
-    /* ── Barre de navigation fixe ── */
+    /* ── Barre de navigation fixe (sous la barre supérieure) ── */
     nav {
       background: #fff;
       border-bottom: 1px solid #e2e8f0;
-      position: sticky; top: 0; z-index: 100;
+      position: sticky; top: 2.3rem; z-index: 100;
     }
     .nav-inner {
       max-width: 960px;
@@ -331,15 +332,15 @@
 </head>
 <body>
 
-<header>
-  <div class="topbar">
-    <a href="https://eartigau.github.io/index_fr.html" class="home-link">eartigau.github.io</a>
-    <div class="lang-switcher">
-      <a href="index_en.html">EN</a>
-      <a href="index_fr.html" class="active">FR</a>
-    </div>
+<div class="topbar">
+  <a href="https://eartigau.github.io/index_fr.html" class="home-link">Page perso</a>
+  <div class="lang-switcher">
+    <a href="index_en.html">EN</a>
+    <a href="index_fr.html" class="active">FR</a>
   </div>
+</div>
 
+<header>
   <h1><span class="mono">latex_updates</span></h1>
   <p class="tagline">
     Transformez deux versions d'un manuscrit LaTeX en PDF avec suivi des modifications,

@@ -15,15 +15,16 @@
       line-height: 1.7;
     }
 
-    /* ── Top bar: homepage + language ── */
+    /* ── Top bar: homepage + language (sticky, always visible) ── */
     .topbar {
-      background: rgba(0,0,0,0.35);
+      background: #0d1b2a;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0.45rem 1.5rem;
-      position: relative;
-      z-index: 2;
+      position: sticky;
+      top: 0;
+      z-index: 101;
     }
     .topbar a {
       color: rgba(255,255,255,0.75);
@@ -117,11 +118,11 @@
     .added   { color: #60a5fa; }
     .removed { color: #fb923c; text-decoration: line-through; }
 
-    /* ── Sticky nav ── */
+    /* ── Sticky nav (sits below the topbar) ── */
     nav {
       background: #fff;
       border-bottom: 1px solid #e2e8f0;
-      position: sticky; top: 0; z-index: 100;
+      position: sticky; top: 2.3rem; z-index: 100;
     }
     .nav-inner {
       max-width: 960px;
@@ -331,15 +332,15 @@
 </head>
 <body>
 
-<header>
-  <div class="topbar">
-    <a href="https://eartigau.github.io/" class="home-link">eartigau.github.io</a>
-    <div class="lang-switcher">
-      <a href="index_en.html" class="active">EN</a>
-      <a href="index_fr.html">FR</a>
-    </div>
+<div class="topbar">
+  <a href="https://eartigau.github.io/" class="home-link">Home page</a>
+  <div class="lang-switcher">
+    <a href="index_en.html" class="active">EN</a>
+    <a href="index_fr.html">FR</a>
   </div>
+</div>
 
+<header>
   <h1><span class="mono">latex_updates</span></h1>
   <p class="tagline">
     Turn two LaTeX manuscript versions into a tracked-changes PDF in one command.
