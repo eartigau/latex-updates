@@ -4,14 +4,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>latex_updates — tracked changes for LaTeX manuscripts</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { font-size: 16px; scroll-behavior: smooth; }
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+      font-family: "Space Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
                    "Helvetica Neue", Arial, sans-serif;
-      color: #1a1a2e;
-      background: #f8f9fc;
+      color: #e8eef8;
+      background:
+        radial-gradient(1200px 600px at 8% 0%, #14325f 0%, #08111f 45%),
+        linear-gradient(160deg, #0a1424 0%, #111f36 100%);
       line-height: 1.7;
     }
 
@@ -120,8 +125,8 @@
 
     /* ── Sticky nav (sits below the topbar) ── */
     nav {
-      background: #fff;
-      border-bottom: 1px solid #e2e8f0;
+      background: #0d1b2a;
+      border-bottom: 1px solid rgba(200, 220, 255, 0.16);
       position: sticky; top: 2.3rem; z-index: 100;
     }
     .nav-inner {
@@ -138,14 +143,14 @@
     nav a {
       display: inline-block;
       padding: 0.8rem 0.85rem;
-      color: #4a5568;
+      color: #a8b4ca;
       text-decoration: none;
       font-size: 0.88rem;
       font-weight: 500;
       white-space: nowrap;
       transition: color 0.2s;
     }
-    nav a:hover { color: #0f3460; }
+    nav a:hover { color: #8ad4ff; }
 
     /* ── Main content ── */
     main {
@@ -158,15 +163,15 @@
     h2 {
       font-size: 1.6rem;
       font-weight: 700;
-      color: #0f3460;
+      color: #8ad4ff;
       margin-bottom: 1rem;
       padding-bottom: 0.4rem;
-      border-bottom: 2px solid #e2e8f0;
+      border-bottom: 2px solid rgba(200, 220, 255, 0.16);
     }
     h3 {
       font-size: 1.1rem;
       font-weight: 600;
-      color: #2d3748;
+      color: #e8eef8;
       margin: 1.5rem 0 0.6rem;
     }
     p { margin-bottom: 0.85rem; }
@@ -178,11 +183,11 @@
       margin-top: 1rem;
     }
     .card {
-      background: #fff;
-      border: 1px solid #e2e8f0;
+      background: rgba(14, 24, 42, 0.82);
+      border: 1px solid rgba(200, 220, 255, 0.16);
       border-radius: 10px;
       padding: 1.2rem 1.3rem;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
     }
     .card .num {
       font-size: 2rem;
@@ -191,7 +196,7 @@
       line-height: 1;
     }
     .card h3 { margin-top: 0.5rem; font-size: 1rem; }
-    .card p  { font-size: 0.88rem; color: #718096; margin: 0; }
+    .card p  { font-size: 0.88rem; color: #a8b4ca; margin: 0; }
 
     pre {
       background: #1a1a2e;
@@ -208,8 +213,8 @@
     }
     pre code { color: inherit; background: none; padding: 0; font-size: inherit; }
     :not(pre) > code {
-      background: #edf2f7;
-      color: #c7254e;
+      background: rgba(4, 8, 16, 0.9);
+      color: #ff9e8a;
       padding: 0.15em 0.4em;
       border-radius: 4px;
       font-size: 0.875em;
@@ -256,33 +261,33 @@
       padding: 0.55rem 0.9rem;
       font-weight: 600;
     }
-    td { padding: 0.55rem 0.9rem; border-bottom: 1px solid #e2e8f0; }
+    td { padding: 0.55rem 0.9rem; border-bottom: 1px solid rgba(200, 220, 255, 0.16); }
     tr:last-child td { border-bottom: none; }
-    tr:nth-child(even) td { background: #f7fafc; }
+    tr:nth-child(even) td { background: rgba(6, 13, 24, 0.5); }
 
     .colour-demo {
-      background: #fff;
-      border: 1px solid #e2e8f0;
+      background: rgba(14, 24, 42, 0.82);
+      border: 1px solid rgba(200, 220, 255, 0.16);
       border-left: 4px solid #4ecdc4;
       border-radius: 8px;
       padding: 1.2rem 1.4rem;
       font-family: "Times New Roman", Georgia, serif;
       font-size: 1.05rem;
       line-height: 1.9;
-      color: #1a202c;
+      color: #e8eef8;
       margin: 0.75rem 0;
     }
     .colour-demo .add  { color: #2563eb; }
     .colour-demo .del  { color: #ea580c; text-decoration: line-through; }
 
     .toggle-box {
-      background: #fff;
-      border: 1px solid #e2e8f0;
+      background: rgba(14, 24, 42, 0.82);
+      border: 1px solid rgba(200, 220, 255, 0.16);
       border-radius: 10px;
       padding: 1.2rem 1.4rem;
       margin: 0.75rem 0;
     }
-    .toggle-box p { margin: 0 0 0.6rem; font-size: 0.92rem; color: #4a5568; }
+    .toggle-box p { margin: 0 0 0.6rem; font-size: 0.92rem; color: #a8b4ca; }
 
     .cta {
       display: inline-block;
@@ -299,14 +304,14 @@
     .cta:hover { background: #1a4a8a; transform: translateY(-1px); }
 
     .info-box {
-      background: #eff6ff;
-      border: 1px solid #bfdbfe;
-      border-left: 4px solid #3b82f6;
+      background: rgba(20, 50, 100, 0.35);
+      border: 1px solid rgba(100, 160, 255, 0.3);
+      border-left: 4px solid #62c2ff;
       border-radius: 8px;
       padding: 1rem 1.3rem;
       margin: 0.75rem 0 1rem;
       font-size: 0.92rem;
-      color: #1e3a5f;
+      color: #c9daf3;
     }
 
     .journal-table td:first-child { white-space: nowrap; }
@@ -314,8 +319,8 @@
       margin: 1.2rem 0;
       border-radius: 10px;
       overflow: hidden;
-      border: 1px solid #e2e8f0;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      border: 1px solid rgba(200, 220, 255, 0.16);
+      box-shadow: 0 2px 12px rgba(0,0,0,0.3);
     }
     .snapshot-wrap img { display: block; width: 100%; height: auto; }
 
@@ -323,11 +328,11 @@
       text-align: center;
       padding: 2rem;
       font-size: 0.85rem;
-      color: #718096;
-      background: #fff;
-      border-top: 1px solid #e2e8f0;
+      color: #a8b4ca;
+      background: #08111f;
+      border-top: 1px solid rgba(200, 220, 255, 0.16);
     }
-    footer a { color: #0f3460; }
+    footer a { color: #8ad4ff; }
   </style>
 </head>
 <body>
