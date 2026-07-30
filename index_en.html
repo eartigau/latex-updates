@@ -123,34 +123,49 @@
     .added   { color: #60a5fa; }
     .removed { color: #fb923c; text-decoration: line-through; }
 
-    /* ── Sticky nav (sits below the topbar) ── */
-    nav {
+    /* ── Sidebar navigation ── */
+    .page-shell {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+    }
+    .sidebar {
+      position: sticky;
+      top: 2.3rem;
+      align-self: start;
+      height: calc(100vh - 2.3rem);
+      overflow-y: auto;
       background: #0d1b2a;
-      border-bottom: 1px solid rgba(200, 220, 255, 0.16);
-      position: sticky; top: 2.3rem; z-index: 100;
-    }
-    .nav-inner {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-    }
-    nav ul {
+      border-right: 1px solid rgba(200, 220, 255, 0.16);
+      padding: 1.75rem 1.1rem;
       display: flex;
-      gap: 0;
-      list-style: none;
-      overflow-x: auto;
+      flex-direction: column;
+      gap: 0.3rem;
     }
-    nav a {
-      display: inline-block;
-      padding: 0.8rem 0.85rem;
+    .nav-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #a8b4ca;
+      margin: 0.9rem 0 0.35rem;
+    }
+    .nav-label:first-child { margin-top: 0; }
+    .sidebar a {
+      display: block;
+      padding: 0.3rem 0.5rem;
+      border-radius: 6px;
       color: #a8b4ca;
       text-decoration: none;
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       font-weight: 500;
-      white-space: nowrap;
-      transition: color 0.2s;
+      transition: background 0.15s, color 0.15s;
     }
-    nav a:hover { color: #8ad4ff; }
+    .sidebar a:hover { background: rgba(255,255,255,0.06); color: #8ad4ff; }
+
+    @media (max-width: 760px) {
+      .page-shell { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+    }
 
     /* ── Main content ── */
     main {
@@ -338,7 +353,7 @@
 <body>
 
 <div class="topbar">
-  <a href="https://eartigau.github.io/" class="home-link">Home page</a>
+  <a href="https://eartigau.github.io/#outils" class="home-link">Home page</a>
   <div class="lang-switcher">
     <a href="index_en.html" class="active">EN</a>
     <a href="index_fr.html">FR</a>
@@ -363,19 +378,22 @@
   </div>
 </header>
 
-<nav>
-  <div class="nav-inner">
-    <ul>
-      <li><a href="#install">Install</a></li>
-      <li><a href="#quickstart">Quick&nbsp;start</a></li>
-      <li><a href="#usage">Usage</a></li>
-      <li><a href="#toggle">Toggle</a></li>
-      <li><a href="#journals">Journals</a></li>
-      <li><a href="#how">How it works</a></li>
-      <li><a href="#demo">Demo</a></li>
-      <li><a href="https://github.com/eartigau/latex-updates">GitHub ↗</a></li>
-    </ul>
-  </div>
+<div class="page-shell">
+<nav class="sidebar" aria-label="Page navigation">
+  <span class="nav-label">Overview</span>
+  <a href="#why">What problem does this solve?</a>
+
+  <span class="nav-label">Usage</span>
+  <a href="#install">Install</a>
+  <a href="#quickstart">Quick&nbsp;start</a>
+  <a href="#usage">Usage</a>
+  <a href="#toggle">Toggle</a>
+
+  <span class="nav-label">Reference</span>
+  <a href="#journals">Journals</a>
+  <a href="#how">How it works</a>
+  <a href="#demo">Demo</a>
+  <a href="https://github.com/eartigau/latex-updates">GitHub ↗</a>
 </nav>
 
 <main>
@@ -725,6 +743,7 @@ Done.</span></code></pre>
   </section>
 
 </main>
+</div>
 
 <footer>
   <p>
